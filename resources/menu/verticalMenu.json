@@ -1,0 +1,64 @@
+{
+  "menu": [
+    {
+      "url": "/dashboard/analytics",
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons mdi mdi-monitor",
+      "slug": "dashboard"
+    },
+    {
+      "name": "Projects",
+      "icon": "menu-icon tf-icons mdi mdi-file-document-outline",
+      "slug": "project",
+      "badge": [
+        "primary",
+        "2"
+      ],
+      "submenu": [
+        {
+          "url": "/dashboard/crm",
+          "name": "Kategori",
+          "slug": "pages-page-2"
+        },
+        {
+          "url": "/dashboard/crm",
+          "name": "Projects",
+          "slug": "pages-page-2"
+        }
+      ]
+    },
+    {
+      "url": "/page-2",
+      "icon": "menu-icon tf-icons mdi mdi-account-outline",
+      "name": "Clients",
+      "slug": "pages-page-2"
+    },
+    {
+      "url": "/page-2",
+      "icon": "menu-icon tf-icons mdi mdi-file-document-outline",
+      "name": "FAQ",
+      "slug": "pages-page-2"
+    },
+    {
+      "url": "/pages/misc-error",
+      "name": "Konfigurasi",
+      "icon": "menu-icon tf-icons mdi mdi-cog",
+      "slug": "pages-misc-error",
+      "target": "_blank"
+    },
+    {
+      "url": "/auth/login-basic",
+      "name": "Login",
+      "icon": "menu-icon tf-icons mdi mdi-login",
+      "slug": "auth-login-basic",
+      "target": "_blank"
+    },
+    {
+      "url": "/auth/register-basic",
+      "name": "Register",
+      "icon": "menu-icon tf-icons mdi mdi-account-outline",
+      "slug": "auth-register-basic",
+      "target": "_blank"
+    }
+  ]
+}
