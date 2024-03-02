@@ -12,7 +12,8 @@ class FaqController extends Controller
      */
     public function index()
     {
-        //
+        $all_faqs = Faq::all();
+        return view('content.faq.index', compact('all_faqs'));
     }
 
     /**
@@ -32,7 +33,11 @@ class FaqController extends Controller
             'question' => 'required',
             'answer' => 'required'
         ]);
-        $faqInput = Faq::create($request->all());
+        $faqInput = Faq::create([
+          'question' => $request->question,
+          'answer' => $request->answer
+        ]
+        );
         return redirect()->route('faq.index')->with('success', 'Data Berhasil Disimpan');
     }
 

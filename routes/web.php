@@ -9,6 +9,7 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\dashboard\Crm;
+use App\Http\Controllers\FaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +28,20 @@ Route::get('/', function () {
   return view('welcome');
 });
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
+Route::get('/page-home', [HomePage::class, 'index'])->name('pages-home');
 
 // Main Page Route
 Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard-analytics');
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
+
+
+// Faq Route
+Route::resource('/dashboard/faq', FaqController::class);
+// Route::get('/dashboard/faq', [FaqController::class, 'index'])->name('faq.index');
+// Route::post('/dashboard/faq', [FaqController::class, 'store'])->name('faq.store');
+// Route::put('/dashboard/faq/{id}', [FaqController::class, 'update'])->name('faq.update');
+// Route::delete('/dashboard/faq/{id}', [FaqController::class, 'destroy'])->name('faq.destroy');
 
 // locale
 Route::get('lang/{locale}', [LanguageController::class, 'swap']);

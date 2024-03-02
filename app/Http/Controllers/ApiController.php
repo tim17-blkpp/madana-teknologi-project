@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FaqResource;
 use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Project;
@@ -18,7 +19,7 @@ class ApiController extends Controller
 
     public function faqs()
     {
-        $faqs = Faq::all();
+        $faqs = FaqResource::collection(Faq::all());
         return response()->json($faqs);
     }
 

@@ -8,7 +8,7 @@
     },
     {
       "name": "Projects",
-      "icon": "menu-icon tf-icons mdi mdi-file-document-outline",
+      "icon": "menu-icon tf-icons mdi mdi-briefcase",
       "slug": "project",
       "badge": [
         "primary",
@@ -18,12 +18,12 @@
         {
           "url": "/dashboard/crm",
           "name": "Kategori",
-          "slug": "pages-page-2"
+          "slug": "pages-page-project"
         },
         {
           "url": "/dashboard/crm",
           "name": "Projects",
-          "slug": "pages-page-2"
+          "slug": "pages-page-project"
         }
       ]
     },
@@ -34,10 +34,10 @@
       "slug": "pages-page-2"
     },
     {
-      "url": "/page-2",
-      "icon": "menu-icon tf-icons mdi mdi-file-document-outline",
+      "url": "/dashboard/faq",
+      "icon": "menu-icon tf-icons mdi mdi-comment-question-outline",
       "name": "FAQ",
-      "slug": "pages-page-2"
+      "slug": "pages-page-home"
     },
     {
       "url": "/pages/misc-error",

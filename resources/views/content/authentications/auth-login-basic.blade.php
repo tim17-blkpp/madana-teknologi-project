@@ -63,7 +63,7 @@ $customizerHidden = 'customizer-hide';
                 </div>
               </div>
             </div>
-            <div class="mb-3 d-flex justify-content-between">
+            {{-- <div class="mb-3 d-flex justify-content-between">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="remember-me">
                 <label class="form-check-label" for="remember-me">
@@ -73,20 +73,20 @@ $customizerHidden = 'customizer-hide';
               <a href="javascript:void(0);" class="float-end mb-1">
                 <span>Forgot Password?</span>
               </a>
-            </div>
+            </div> --}}
             <div class="mb-3">
               <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
             </div>
           </form>
 
-          <p class="text-center">
+          {{-- <p class="text-center">
             <span>New on our platform?</span>
             <a href="{{url('auth/register-basic')}}">
               <span>Create an account</span>
             </a>
-          </p>
+          </p> --}}
 
-          <div class="divider my-4">
+          {{-- <div class="divider my-4">
             <div class="divider-text">or</div>
           </div>
 
@@ -106,7 +106,7 @@ $customizerHidden = 'customizer-hide';
             <a href="javascript:;" class="btn btn-icon btn-lg rounded-pill btn-text-google-plus">
               <i class="tf-icons mdi mdi-24px mdi-google"></i>
             </a>
-          </div>
+          </div> --}}
         </div>
       </div>
       <!-- /Login -->
