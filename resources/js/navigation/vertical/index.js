@@ -9,4 +9,9 @@ export default [
     to: { name: 'second-page' },
     icon: { icon: 'mdi-file-document-outline' },
   },
+  {
+    title: 'Landing Page',
+    to: { name: 'madana' },
+    icon: { icon: 'mdi-file-document-outline' },
+  },
 ]
