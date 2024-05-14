@@ -6,9 +6,23 @@ export default [
     icon: { icon: 'mdi-home-outline' },
   },
   {
+    title: 'Projects',
+    icon: { icon: 'mdi-file-document-outline' },
+    children: [
+      { title: 'List Proyek', to: 'dashboard-projects-list' },
+      { title: 'Kategori', to: 'dashboard-projects-categories' },
+      { title: 'Klien', to: 'dashboard-projects-clients' },
+    ],
+  },
+  {
     title: 'FAQ',
     to: { name: 'dashboard-faq' },
-    icon: { icon: 'mdi-file-document-outline' },
+    icon: { icon: 'mdi-frequently-asked-questions' },
+  },
+  {
+    title: 'Konfigurasi',
+    to: { name: 'konfigurasi' },
+    icon: { icon: 'mdi-cog' },
   },
 
   // gausah dihapus dulu buat contoh

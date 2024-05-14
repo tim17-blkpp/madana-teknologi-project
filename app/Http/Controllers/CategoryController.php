@@ -2,57 +2,127 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $all_categories = Category::all();
-        return view('content.projects.categories', compact('all_categories'));
+        // Get the search keyword from the request
+        $searchKeyword = $request->input('search');
+
+        // Fetch the categories based on the search keyword
+        $categoryQuery = Category::where('name', 'like', '%' . $searchKeyword . '%');
+
+        // Get the pagination size from the request, default to 10 if not provided
+        $perPage = $request->input('perPage', 10);
+
+        // Fetch the FAQs with pagination
+        $categories = $categoryQuery->paginate($perPage);
+
+        // Transform the fetched FAQs into a resource collection
+        $result = CategoryResource::collection($categories);
+
+        // Return the JSON response with pagination data
+        return $result->additional([
+            'pagination' => [
+                'total' => $categories->total(),
+                'perPage' => $categories->perPage(),
+                'currentPage' => $categories->currentPage(),
+                'lastPage' => $categories->lastPage(),
+            ]
+        ]);
     }
 
     public function create()
     {
-
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
-        $categoryInput = Category::create($request->all());
-        return redirect()->back()->with('success', 'Data Berhasil Disimpan');
+        try {
+            $categoryInput = Category::create(
+                [
+                    'name' => $request->name,
+                ]
+            );
+            return response()->json([
+                'message' => 'Data berhasil ditambahkan',
+            ], JsonResponse::HTTP_CREATED);
+        } catch (\Exception $error) {
+            return response()->json([
+                'message' => 'Data gagal ditambahkan',
+                'error' => $error
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function show(Category $category)
     {
-
     }
 
     public function edit(Category $category)
     {
-
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
-        $category = Category::find($id);
-        $category->name = $request->name;
-        $category->save();
-        return redirect()->route('category.index')->with('success', 'Data Berhasil Diupdate');
+        try {
+            $category = Category::find($id);
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Data tidak ditemukan',
+                ], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            $category->update($request->all());
+            return response()->json([
+                'message' => 'Data berhasil diperbarui',
+            ], JsonResponse::HTTP_OK);
+        } catch (\Exception $error) {
+            return response()->json([
+                'message' => 'Data gagal diperbarui',
+                'error' => $error
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function destroy($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-        return redirect()->route('category.index')->with('success', 'Data Berhasil Dihapus');
+        try {
+            $category = Category::find($id);
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Data tidak ditemukan',
+                ], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            // check if the category has projects
+            if ($category->projects()->exists()) {
+                return response()->json([
+                    'message' => 'Masih terdapat proyek yang terkait dengan kategori ini',
+                ], JsonResponse::HTTP_BAD_REQUEST);
+            }
+
+            $category->delete();
+            return response()->json([
+                'message' => 'Data berhasil dihapus',
+            ], JsonResponse::HTTP_OK);
+        } catch (\Exception $error) {
+            return response()->json([
+                'message' => 'Data gagal dihapus',
+                'error' => $error
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
