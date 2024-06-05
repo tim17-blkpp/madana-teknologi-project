@@ -1,19 +1,19 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import ClientAddEditDialog from '../../../../components/dialogs/ClientAddEditDialog.vue'
-import { useClientStore } from './useClientStore'
+import RolesAddEditDialog from '../../../components/dialogs/RolesAddEditDialog.vue'
+import { useRoleStore } from './useRoleStore'
 
-const pageTitle = 'List Klien'
-const clients = ref([])
-const selectedClient = ref(null)
+const pageTitle = 'Role yang Dimiliki'
+const roles = ref([])
+const selectedRole = ref(null)
 const isDialogVisible = ref(false)
 
 // Meta data - pagination
 const currentPage = ref(1)
 const totalPages = ref(0)
 const perPage = ref(10)
-const totalClients = ref(0)
+const totalRoles = ref(0)
 const from = ref(0)
 const to = ref(0)
 
@@ -22,7 +22,7 @@ const searchQuery = ref('')
 
 // confirm dialog: DELETE
 const isConfirmDialogVisible = ref(false)
-const confirmQuestion = 'Apakah Anda yakin ingin menghapus klien ini?'
+const confirmQuestion = 'Apakah Anda yakin ingin menghapus role ini?'
 
 // alert dialog
 const alertTitle = ref('')
@@ -39,17 +39,15 @@ const header = [
     sortable: false,
   },
   {
-    title: 'Klien',
-    key: 'client_name',
+    title: 'Role',
+    key: 'role_name',
+    width: '200px',
+    align: 'center',
   },
   {
-    title: 'Alamat',
-    key: 'client_address',
-  },
-  {
-    title: 'Jumlah Proyek Terkait',
-    key: 'project_count',
-    width: '300px',
+    title: 'Tampil di Halaman Utama',
+    key: 'role_show',
+    width: '200px',
     align: 'center',
   },
   {
@@ -62,34 +60,34 @@ const header = [
 ]
 
 
-// Open dialog to add or edit Client
+// Open dialog to add or edit role
 const openDialog = item => {
-  selectedClient.value = item.raw
+  selectedRole.value = item.raw
   isDialogVisible.value = true
 }
 
-// Show confirm dialog to delete Client
+// Show confirm dialog to delete role
 const showConfirmDialog = item => {
-  selectedClient.value = item.raw
+  selectedRole.value = item.raw
   isConfirmDialogVisible.value = true
 }
 
-// On Delete Client
+// On Delete role
 const onDeleteConfirmation = () => {
-  const clientStore = useClientStore()
+  const roleStore = useRoleStore()
 
-  if (selectedClient.value.id) {
+  if (selectedRole.value.id) {
     try {
-      clientStore.deleteClient(selectedClient.value.id).then(response => {
+      roleStore.deleteRole(selectedRole.value.id).then(response => {
         alertTitle.value = 'Berhasil!'
         alertMsg.value = response.data.message
-        fetchClients(searchQuery.value, currentPage.value, perPage.value)
+        fetchRoles(searchQuery.value, currentPage.value, perPage.value)
       }).catch(error => {
         alertTitle.value = 'Gagal!'
         alertMsg.value = error
       })
     } catch (error) {
-      alertMsg.value = 'Gagal menghapus Klien'
+      alertMsg.value = 'Gagal menghapus role'
       console.log(error)
     } finally {
       showAlertSuccess()
@@ -120,7 +118,7 @@ const closeAlertDelayed = delay => {
 // Handle form submitted
 const handleFormSubmitted = submitted => {
   if (submitted) {
-    fetchClients(searchQuery.value, currentPage.value, perPage.value)
+    fetchRoles(searchQuery.value, currentPage.value, perPage.value)
     showAlertSuccess()
   }
 }
@@ -131,21 +129,21 @@ const getSubmitMsg = msg => {
   alertMsg.value = msg[1]
 }
 
-// Fetch Clients function with pagination
-const fetchClients = async (query, page = 1, perPage = 10) => {
-  const clientStore = useClientStore()
+// Fetch roles function with pagination
+const fetchRoles = async (query, page = 1, perPage = 10) => {
+  const roleStore = useRoleStore()
 
   try {
-    const response = await clientStore.fetchClients({
+    const response = await roleStore.fetchRoles({
       search: query,
       page,
       perPage,
     })
 
-    clients.value = response.data
+    roles.value = response.data
     currentPage.value = response.data.meta.current_page
     totalPages.value = response.data.meta.last_page
-    totalClients.value = response.data.meta.total
+    totalRoles.value = response.data.meta.total
     from.value = response.data.meta.from
     to.value = response.data.meta.to
   } catch (error) {
@@ -154,7 +152,7 @@ const fetchClients = async (query, page = 1, perPage = 10) => {
 }
 
 watchEffect(() => {
-  fetchClients(searchQuery.value, currentPage.value, perPage.value)
+  fetchRoles(searchQuery.value, currentPage.value, perPage.value)
 })
 </script>
 
@@ -170,7 +168,7 @@ watchEffect(() => {
         <VSpacer />
 
         <div class="d-flex align-center flex-wrap gap-4">
-          <!-- 👉 Filter Cari Client  -->
+          <!-- 👉 Filter Cari Role  -->
           <div class="cat-list-search">
             <VTextField
               v-model="searchQuery"
@@ -179,12 +177,12 @@ watchEffect(() => {
             />
           </div>
 
-          <!-- 👉 Tambah Client -->
+          <!-- 👉 Tambah Role -->
           <VBtn
             prepend-icon="mdi-plus"
             @click="openDialog({})"
           >
-            Tambah Klien
+            Tambah Data
           </VBtn>
         </div>
       </VCardText>
@@ -193,7 +191,7 @@ watchEffect(() => {
         <VDataTable
           v-model:items-per-page="perPage"
           :headers="header"
-          :items="clients.data"
+          :items="roles.data"
           class="rounded-lg effect-1"
         >
           <!-- No -->
@@ -201,32 +199,56 @@ watchEffect(() => {
             <span>{{ (currentPage - 1) * 10 + index + 1 }}</span>
           </template>
 
-          <!-- Detail Client -->
-          <template #item.client_name="{ item }">
-            <p>
-              <b>Nama &emsp;&ensp;&nbsp;: </b> {{ item.raw.name }}<br>
-              <b>Email &emsp;&emsp;: </b> {{ item.raw.email }}<br>
-              <b>Telepon &ensp; : </b> {{ item.raw.phone }}
-            </p>
-          </template>
-          
-          <!-- Alamat Client -->
-          <template #item.client_address="{ item }">
-            <p>
-              {{ item.raw.address }}
-            </p>
+          <!-- Roles -->
+          <template #item.role_name="{ item }">
+            <VRow
+              align-content="space-between"
+              justify="space-evenly"
+              class="my-1"
+            >
+              <VCol align-self="center">
+                <img
+                  v-if="item.raw.icon"
+                  :src="item.raw.icon"
+                  alt="item.raw.name"
+                  width="100"
+                  height="100"
+                >
+              </VCol>
+              <VCol
+                align-self="center"
+                class="text-start"
+              >
+                <p>{{ item.raw.name }}</p>
+              </VCol>
+            </VRow>
           </template>
 
-          <!-- Jumlah proyek dikerjakan -->
-          <template #item.project_count="{ item }">
+          <!-- Show on landing page -->
+          <template #item.role_show="{ item }">
             <div class="project-detail">
-              <span>{{ item.raw.projects_count }} proyek</span>
-              <VBtn
-                icon="mdi-arrow-right"
-                color="info"
-                rounded="sm"
-                size="small"
-              />
+              <VChip
+                v-if="item.raw.show_on_landing_page"
+                color="success"
+                text-color="white"
+                class="text-capitalize"
+              >
+                <VIcon color="success">
+                  mdi-check
+                </VIcon>
+                <span>&emsp;Ya</span>
+              </VChip>
+              <VChip
+                v-else
+                color="error"
+                text-color="white"
+                class="text-capitalize"
+              >
+                <VIcon color="error">
+                  mdi-close
+                </VIcon>
+                <span>&emsp;Tidak</span>
+              </VChip>
             </div>
           </template>
           
@@ -255,10 +277,10 @@ watchEffect(() => {
       </VCardItem>
 
       
-      <!-- 👉 Add/Edit Client dialog -->
-      <ClientAddEditDialog
+      <!-- 👉 Add/Edit Role dialog -->
+      <RolesAddEditDialog
         v-model:isDialogVisible="isDialogVisible"
-        :client-details="selectedClient"
+        :role-details="selectedRole"
         @form-submitted="handleFormSubmitted"
         @alert-msg="getSubmitMsg"
       />
@@ -307,4 +329,4 @@ watchEffect(() => {
     align-items: center;
   }
 }
-</style>
+</style>./useRolesStore./useRoleStore

@@ -1,17 +1,14 @@
 <script setup>
-import { useClientStore } from '@/pages/dashboard/projects/clients/useClientStore'
+import { useToolStore } from '@/pages/dashboard/tools/useToolStore'
 import { ref, toRaw, watch } from 'vue'
 
 const props = defineProps({
-  clientDetails: {
+  toolDetails: {
     type: Object,
     required: false,
     default: () => ({
       name: '',
-      address: '',
-      email: '',
-      phone: '',
-      logo_upload: '',
+      icon_upload: '',
       show_on_landing_page: '0',
     }),
   },
@@ -28,32 +25,26 @@ const emit = defineEmits([
   'alertMsg',
 ])
 
-const clientDetails = ref(structuredClone(toRaw(props.clientDetails)))
+const toolDetails = ref(structuredClone(toRaw(props.toolDetails)))
 
 watch(props, () => {
-  clientDetails.value = structuredClone(toRaw(props.clientDetails))
+  toolDetails.value = structuredClone(toRaw(props.toolDetails))
 })
 
-const phoneRules = [
-  v => !!v || 'Nomor telepon wajib diisi',
-  v => /^(\+?)([0-9]+)$/.test(v) || 'Nomor telepon hanya boleh berisi angka dan tanda +',
-  v => (v && v.length >= 10 && v.length <= 15) || 'Nomor telepon harus memiliki panjang antara 10 dan 15 karakter',
-]
-
 const formSubmit = async () => {
-  const store = useClientStore()
+  const store = useToolStore()
 
 
-  if (!clientDetails.value.id) {
-    // Client baru
+  if (!toolDetails.value.id) {
+    // Category baru
     try {
-    // Call the createClient action from the store
-      const response = await store.createClient(clientDetails.value)
+    // Call the createTool action from the store
+      const response = await store.createTool(toolDetails.value)
 
       // Check the status of the HTTP response
       if (response.status === 201) {
-      // Client created successfully
-        emit('submit', clientDetails.value)
+      // Category created successfully
+        emit('submit', toolDetails.value)
         emit('update:isDialogVisible', false)
 
         // Emit an event to notify the parent component about the successful submission
@@ -61,23 +52,23 @@ const formSubmit = async () => {
         emit('alertMsg', ['Berhasil!', response.data.message])
       } else {
       // Handle other response statuses
-        console.error('Error creating Client. Unexpected status:', response.status)
+        console.error('Error creating Category. Unexpected status:', response.status)
       }
     } catch (error) {
     // Handle any errors, e.g., display an error message
-      console.error('Error creating Client:', error)
+      console.error('Error creating Category:', error)
     }
   }
   else {
-    // edit Client
+    // edit Category
     try {
-    // Call the updateClient action from the store
-      const response = await store.updateClient(clientDetails.value.id, clientDetails.value)
+    // Call the updateTool action from the store
+      const response = await store.updateTool(toolDetails.value.id, toolDetails.value)
 
       // Check the status of the HTTP response
       if (response.status === 200) {
-      // Client updated successfully
-        emit('submit', clientDetails.value)
+      // Category updated successfully
+        emit('submit', toolDetails.value)
         emit('update:isDialogVisible', false)
 
         // Emit an event to notify the parent component about the successful submission
@@ -85,11 +76,11 @@ const formSubmit = async () => {
         emit('alertMsg', ['Berhasil!', response.data.message])
       } else {
       // Handle other response statuses
-        console.error('Error updating Client. Unexpected status:', response.status)
+        console.error('Error updating Category. Unexpected status:', response.status)
       }
     } catch (error) {
     // Handle any errors, e.g., display an error message
-      console.error('Error creating Client:', error)
+      console.error('Error creating Category:', error)
     }
   }
 
@@ -113,62 +104,28 @@ const formSubmit = async () => {
       <!-- 👉 Title -->
       <VCardItem class="text-start">
         <VCardTitle class="text-2xl mb-3">
-          {{ props.clientDetails.name ? 'Edit Klien' : 'Tambah Klien Baru' }}
+          {{ props.toolDetails.name ? 'Edit Data' : 'Tambah Data' }}
         </VCardTitle>
         <VCardSubtitle>
-          {{ props.clientDetails.name ? 'Edit detail Klien' : 'Tambah detail Klien' }}
+          {{ props.toolDetails.name ? 'Edit detail Data' : 'Tambah detail Data' }}
         </VCardSubtitle>
       </VCardItem>
 
       <VCardText class="mt-6">
         <VForm @submit.prevent="() => {}">
           <VRow>
-            <!-- 👉 Client Name -->
+            <!-- 👉 Tool Name -->
             <VCol cols="12">
               <VTextField
-                v-model="clientDetails.name"
-                label="Nama Klien"
-                placeholder="Masukkan nama klien"
+                v-model="toolDetails.name"
+                label="Nama"
+                placeholder="Masukkan nama"
               />
             </VCol>
             
-            <!-- 👉 Client Address -->
-            <VCol cols="12">
-              <VTextarea
-                v-model="clientDetails.address"
-                label="Alamat"
-                placeholder="Masukkan alamat klien"
-              />
-            </VCol>
-            
-            <!-- 👉 Client Email -->
-            <VCol
-              cols="12"
-              md="6"
-            >
-              <VTextField
-                v-model="clientDetails.email"
-                label="Email Klien"
-                placeholder="Masukkan email klien"
-              />
-            </VCol>
-            
-            <!-- 👉 Client Phone -->
-            <VCol
-              cols="12"
-              md="6"
-            >
-              <VTextField
-                v-model="clientDetails.phone"
-                label="No Telepon"
-                placeholder="Masukkan no telepon yang dapat dihubungi"
-                :rules="phoneRules"
-              />
-            </VCol>
-
             <!-- 👉 Show on landing page -->
             <VCol cols="12">
-              <VRadioGroup v-model="clientDetails.show_on_landing_page">
+              <VRadioGroup v-model="toolDetails.show_on_landing_page">
                 <VRadio
                   :value="1"
                   :color="success"
@@ -193,27 +150,30 @@ const formSubmit = async () => {
                 </VRadio>
               </VRadioGroup>
             </VCol>
+            
+            <!-- 👉 Tool Icon -->
+            <VRow class="mb-4">
+              <VCol align-self="center">
+                <VFileInput
+                  v-model="toolDetails.icon_upload"
+                  label="Icon"
+                  placeholder="Pilih file"
+                  accept="image/*"
+                />
+              </VCol>
 
-
-            <!-- 👉 Client Logo -->
-            <VCol cols="12">
-              <VFileInput
-                v-model="clientDetails.logo_upload"
-                label="Logo Klien"
-                accept="image/*"
-                placeholder="Pilih file logo klien"
-              />
-            </VCol>
-
-            <!-- Preview Logo -->
-            <VCol cols="12">
-              <VImg
-                v-if="clientDetails.logo"
-                :src="clientDetails.logo"
-                width="200px"
-                height="200px"
-              />
-            </VCol>
+              <!-- Preview icon -->
+              <VCol
+                v-if="toolDetails.icon"
+                cols="3"
+              >
+                <VImg
+                  :src="toolDetails.icon"
+                  width="100"
+                  height="100"
+                />
+              </VCol>
+            </VRow>
 
 
             <!-- 👉 Card actions -->

@@ -1,9 +1,9 @@
 export default [
   { heading: 'Dashboard' },
   {
-    title: 'Portofolio',
+    title: 'Statistik',
     to: { name: 'index' },
-    icon: { icon: 'mdi-home-outline' },
+    icon: { icon: 'mdi-view-dashboard' },
   },
   {
     title: 'Projects',
@@ -13,6 +13,16 @@ export default [
       { title: 'Kategori', to: 'dashboard-projects-categories' },
       { title: 'Klien', to: 'dashboard-projects-clients' },
     ],
+  },
+  {
+    title: 'Tools',
+    icon: { icon: 'mdi-wrench' },
+    to: 'dashboard-tools',
+  },
+  {
+    title: 'Roles',
+    icon: { icon: 'mdi-account-group-outline' },
+    to: 'dashboard-roles',
   },
   {
     title: 'FAQ',

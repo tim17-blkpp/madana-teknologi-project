@@ -1,7 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\KonfigurasiController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\ToolsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,13 +22,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Ensure that only authenticated users can access the user info
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('/faqs', [FaqController::class, 'index']);
-// Route::post('/faqs', [FaqController::class, 'store']);
-// Route::put('/faqs/{id}', [FaqController::class, 'update']);
+// Public routes (assuming 'index' and 'show' methods are public)
+Route::apiResource('/faqs', FaqController::class)->only(['index', 'show']);
+Route::apiResource('/projects/categories', CategoryController::class)->only(['index', 'show']);
+Route::apiResource('/projects/clients', ClientController::class)->only(['index', 'show']);
+Route::apiResource('/projects', ProjectController::class)->only(['index', 'show']);
+Route::apiResource('/tools', ToolsController::class)->only(['index', 'show']);
+Route::apiResource('/roles', RolesController::class)->only(['index', 'show']);
+Route::get('/konfigurasi', [KonfigurasiController::class, 'index']);
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::apiResource('/faqs', FaqController::class);
-Route::apiResource('/projects/categories', CategoryController::class);
+// Routes requiring authentication
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/faqs', FaqController::class)->except(['index', 'show']);
+    Route::apiResource('/projects/categories', CategoryController::class)->except(['index', 'show']);
+    Route::apiResource('/projects/clients', ClientController::class)->except(['index', 'show']);
+    Route::post('/projects/clients/{id}', [ClientController::class, 'update']);
+
+    Route::apiResource('/projects', ProjectController::class)->except(['index', 'show']);
+    Route::post('/projects/{id}', [ProjectController::class, 'update']);
+
+    Route::apiResource('/tools', ToolsController::class)->except(['index', 'show']);
+    Route::post('/tools/{id}', [ToolsController::class, 'update']);
+
+    Route::apiResource('/roles', RolesController::class)->except(['index', 'show']);
+    Route::post('/roles/{id}', [RolesController::class, 'update']);
+
+    Route::post('/konfigurasi', [KonfigurasiController::class, 'update']);
+});

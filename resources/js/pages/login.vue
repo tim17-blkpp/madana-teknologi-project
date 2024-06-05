@@ -1,6 +1,6 @@
 <script setup>
 import { useGenerateImageVariant } from '@/@core/composable/useGenerateImageVariant'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+import axios from '@axios'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
 import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
@@ -9,16 +9,40 @@ import authV2LoginMaskDark from '@images/pages/auth-v2-login-mask-dark.png'
 import authV2LoginMaskLight from '@images/pages/auth-v2-login-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
+import { useRouter } from 'vue-router'
 
 const form = ref({
   email: '',
   password: '',
-  remember: false,
 })
+
 
 const isPasswordVisible = ref(false)
 const authV2LoginMask = useGenerateImageVariant(authV2LoginMaskLight, authV2LoginMaskDark)
 const authV2LoginIllustration = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
+
+const router = useRouter()
+
+async function login() {
+  try {
+    await axios.get('/sanctum/csrf-cookie')
+
+    const response = await axios.post('/api/login', {
+      email: form.value.email,
+      password: form.value.password,
+    })
+
+    if (response.status === 200) {
+      router.push({ name: 'index' })
+    }
+    else {
+      console.error('Login failed')
+    }
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -66,14 +90,14 @@ const authV2LoginIllustration = useGenerateImageVariant(authV2LoginIllustrationL
       >
         <VCardText>
           <h5 class="text-h5 mb-1">
-            Welcome to <span class="text-capitalize">{{ themeConfig.app.title }}! 👋🏻</span>
+            <span class="text-capitalize">Selamat Datang! 👋🏻</span>
           </h5>
           <p class="mb-0">
-            Please sign-in to your account and start the adventure
+            Isi email dan password dengan benar untuk melanjutkan
           </p>
         </VCardText>
         <VCardText>
-          <VForm @submit.prevent="() => { }">
+          <VForm @submit.prevent="login">
             <VRow>
               <!-- email -->
               <VCol cols="12">
@@ -97,56 +121,13 @@ const authV2LoginIllustration = useGenerateImageVariant(authV2LoginIllustrationL
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 
-                <div class="d-flex align-center flex-wrap justify-space-between mt-1 mb-4">
-                  <VCheckbox
-                    v-model="form.remember"
-                    label="Remember me"
-                  />
-                  <a
-                    class="text-primary ms-2 mb-1"
-                    href="#"
-                  >
-                    Forgot Password?
-                  </a>
-                </div>
-
                 <VBtn
                   block
                   type="submit"
+                  class="mt-4"
                 >
                   Login
                 </VBtn>
-              </VCol>
-
-              <!-- create account -->
-              <VCol
-                cols="12"
-                class="text-center text-base"
-              >
-                <span>New on our platform?</span>
-                <a
-                  class="text-primary ms-2"
-                  href="#"
-                >
-                  Create an account
-                </a>
-              </VCol>
-
-              <VCol
-                cols="12"
-                class="d-flex align-center"
-              >
-                <VDivider />
-                <span class="mx-4">or</span>
-                <VDivider />
-              </VCol>
-
-              <!-- auth providers -->
-              <VCol
-                cols="12"
-                class="text-center"
-              >
-                <AuthProvider />
               </VCol>
             </VRow>
           </VForm>

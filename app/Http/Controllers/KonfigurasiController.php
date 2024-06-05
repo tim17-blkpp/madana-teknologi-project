@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Konfigurasi;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class KonfigurasiController extends Controller
 {
@@ -13,6 +15,9 @@ class KonfigurasiController extends Controller
     public function index()
     {
         //
+
+        $konfigurasi = Konfigurasi::all()->first();
+        return response()->json($konfigurasi, JsonResponse::HTTP_OK);
     }
 
     /**
@@ -50,9 +55,63 @@ class KonfigurasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Konfigurasi $konfigurasi)
+    public function update(Request $request)
     {
         //
+        $request->validate([
+            'nama' => 'sometimes',
+            'logo' => 'sometimes',
+            'deskripsi' => 'sometimes',
+            'favicon' => 'sometimes',
+            'email' => 'sometimes',
+            'no_telp' => 'sometimes',
+            'alamat' => 'sometimes',
+            'facebook' => 'sometimes',
+            'instagram' => 'sometimes',
+            'twitter' => 'sometimes',
+            'whatsapp' => 'sometimes',
+            'google_maps' => 'sometimes',
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            if (is_array($logo)) {
+                $logo = $logo[0];
+            }
+            $logoName = time() . '_' . $logo->getClientOriginalName();
+            $logoPath = '/storage/' . $logo->storeAs('uploads', $logoName, 'public');
+        } else {
+            $logoPath = $request->logo ?? null;
+        }
+
+        $konfigurasi = Konfigurasi::all()->first();
+
+        try {
+            $konfigurasi->update([
+                'nama' => $request->nama ?? $konfigurasi->nama,
+                'logo' => $logoPath ?? $konfigurasi->logo,
+                'deskripsi' => $request->deskripsi ?? $konfigurasi->deskripsi,
+                'favicon' => $request->favicon ?? $konfigurasi->favicon,
+                'email' => $request->email ?? $konfigurasi->email,
+                'no_telp' => $request->no_telp ?? $konfigurasi->no_telp,
+                'alamat' => $request->alamat ?? $konfigurasi->alamat,
+                'facebook' => $request->facebook ?? $konfigurasi->facebook,
+                'instagram' => $request->instagram ?? $konfigurasi->instagram,
+                'twitter' => $request->twitter ?? $konfigurasi->twitter,
+                'whatsapp' => $request->whatsapp ?? $konfigurasi->whatsapp,
+                'google_maps' => $request->google_maps ?? $konfigurasi->google_maps,
+            ]);
+
+            Log::info($request->all());
+            return response()->json([
+                'message' => 'Konfigurasi berhasil diubah'
+            ], JsonResponse::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error menyimpan konfigurasi',
+                'error' => $e->getMessage()
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

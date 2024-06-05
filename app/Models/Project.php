@@ -10,7 +10,7 @@ class Project extends Model
     use HasFactory;
 
     protected $table = 'projects';
-    protected $fillable = ['category_id', 'name', 'description', 'url', 'thumbnail'];
+    protected $fillable = ['category_id', 'client_id', 'name', 'description', 'url', 'thumbnail_path', 'start_date', 'end_date', 'status', 'show_on_landing_page'];
 
     public function category()
     {
@@ -22,8 +22,12 @@ class Project extends Model
         return $this->hasMany(Gallery::class);
     }
 
-    public function details()
+    public function client()
     {
-        return $this->hasOne(ProjectDetail::class);
+        return $this->belongsTo(Client::class);
     }
+    // public function thumbnail()
+    // {
+    //     return $this->belongsTo(Gallery::class, 'thumbnail_id');
+    // }
 }

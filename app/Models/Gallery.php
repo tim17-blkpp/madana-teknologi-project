@@ -10,7 +10,7 @@ class Gallery extends Model
     use HasFactory;
 
     protected $table = 'galleries';
-    protected $fillable = ['project_id', 'image_path'];
+    protected $fillable = ['project_id', 'file_name', 'image_path'];
 
     public function project()
     {

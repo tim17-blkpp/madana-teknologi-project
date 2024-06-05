@@ -11,10 +11,22 @@ export const useClientStore = defineStore('ClientStore', {
       return axios.get(`/api/projects/clients/${id}`)
     },
     createClient(data) {
-      return axios.post('/api/projects/clients', data)
+      return axios.post('/api/projects/clients', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
     },
     updateClient(id, data) {
-      return axios.put(`/api/projects/clients/${id}`, data)
+      return axios.post(`/api/projects/clients/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: {
+          ...data,
+          _method: 'PUT',
+        },
+      })
     },
     deleteClient(id) {
       return axios.delete(`/api/projects/clients/${id}`)

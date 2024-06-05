@@ -10,11 +10,10 @@ class Client extends Model
     use HasFactory;
 
     protected $table = 'clients';
-    protected $fillable = ['name', 'email', 'phone', 'address'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'logo', 'show_on_landing_page'];
 
     public function projects()
     {
-        return $this->hasMany(ProjectDetail::class);
+        return $this->hasMany(Project::class);
     }
-
 }
