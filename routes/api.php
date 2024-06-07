@@ -38,7 +38,7 @@ Route::get('/konfigurasi', [KonfigurasiController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // Routes requiring authentication
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/faqs', FaqController::class)->except(['index', 'show']);
     Route::apiResource('/projects/categories', CategoryController::class)->except(['index', 'show']);
     Route::apiResource('/projects/clients', ClientController::class)->except(['index', 'show']);
@@ -54,4 +54,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/roles/{id}', [RolesController::class, 'update']);
 
     Route::post('/konfigurasi', [KonfigurasiController::class, 'update']);
-});
+// });

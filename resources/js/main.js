@@ -9,6 +9,8 @@ import '@core-scss/template/index.scss'
 import '@styles/styles.scss'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import bootstrap from 'bootstrap/dist/js/bootstrap'
 
 loadFonts()
 
@@ -22,6 +24,7 @@ app.use(vuetify)
 app.use(createPinia())
 app.use(router)
 app.use(layoutsPlugin)
+app.use(bootstrap)
 
 // Mount vue app
 app.mount('#app')
