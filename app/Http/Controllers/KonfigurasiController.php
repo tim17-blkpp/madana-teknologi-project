@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Konfigurasi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class KonfigurasiController extends Controller
@@ -57,6 +58,12 @@ class KonfigurasiController extends Controller
      */
     public function update(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         //
         $request->validate([
             'nama' => 'sometimes',

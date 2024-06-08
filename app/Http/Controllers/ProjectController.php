@@ -7,6 +7,7 @@ use App\Models\Gallery;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log; // Import the Log facade
 
@@ -22,6 +23,9 @@ class ProjectController extends Controller
 
         // Get the pagination size from the request, default to 10 if not provided
         $perPage = $request->input('perPage', 10);
+
+        $show = $request->input('show_on_landing_page');
+        dd($show);
 
         // Fetch the FAQs with pagination
         $projects = $projectQuery->paginate($perPage);
@@ -46,6 +50,12 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
 
         // Log::info($request->all());
         $request->validate([
@@ -125,6 +135,12 @@ class ProjectController extends Controller
         // $data = json_decode($request->getContent());
         // $data = json_decode($data);
         // Log::info($data);
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
 
         $request->validate([
             'name' => 'sometimes',
@@ -191,6 +207,12 @@ class ProjectController extends Controller
 
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         try {
             $project = Project::find($id);
             if (!$project) {

@@ -6,6 +6,7 @@ use App\Http\Resources\FaqResource;
 use App\Models\Faq;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
 {
@@ -54,6 +55,12 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         $request->validate([
             'question' => 'required',
             'answer' => 'required'
@@ -97,6 +104,12 @@ class FaqController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         $request->validate([
             'question' => 'required',
             'answer' => 'required'
@@ -126,6 +139,12 @@ class FaqController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         try {
             $faq = Faq::find($id);
             if (!$faq) {

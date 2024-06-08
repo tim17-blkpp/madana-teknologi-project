@@ -21,4 +21,6 @@ Route::get('{any?}', function () {
     return view('application');
 })->where('any', '.*');
 
-Route::post('/login', [LoginController::class, 'login']);
+Route::get('/login', function () {
+    return view('application');
+})->name('login');

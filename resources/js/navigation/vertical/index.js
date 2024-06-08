@@ -2,7 +2,7 @@ export default [
   { heading: 'Dashboard' },
   {
     title: 'Statistik',
-    to: { name: 'index' },
+    to: { name: 'dashboard' },
     icon: { icon: 'mdi-view-dashboard' },
   },
   {

@@ -6,6 +6,7 @@ use App\Http\Resources\RolesResource;
 use App\Models\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RolesController extends Controller
 {
@@ -53,6 +54,12 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         // Log::info($request->all());
         $request->validate([
             'name' => 'required',
@@ -106,6 +113,12 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         $request->validate([
             'name' => 'required',
             'icon_upload' => 'sometimes',
@@ -153,6 +166,12 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         //
         $role = Roles::find($id);
         if (!$role) {

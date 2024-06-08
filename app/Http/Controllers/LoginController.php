@@ -12,7 +12,7 @@ class LoginController extends Controller
     //
     public function login(Request $request)
     {
-        Log::info($request->all());
+        // Log::info($request->all());
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -30,5 +30,15 @@ class LoginController extends Controller
         return response()->json([
             'message' => 'Login gagal. Unauthorized.',
         ], 401);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return response()->json([
+            'message' => 'Logout berhasil',
+        ], 200);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -44,6 +45,12 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         $request->validate([
             'name' => 'required',
         ]);
@@ -74,6 +81,12 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         $request->validate([
             'name' => 'required',
         ]);
@@ -99,6 +112,12 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         try {
             $category = Category::find($id);
             if (!$category) {

@@ -7,6 +7,7 @@ use App\Models\Tools;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ToolsController extends Controller
@@ -55,6 +56,12 @@ class ToolsController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         //
         // Log::info($request->all());
         $request->validate([
@@ -114,6 +121,12 @@ class ToolsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         //
         Log::info($request->all());
 
@@ -164,6 +177,12 @@ class ToolsController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         //
         $tools = Tools::find($id);
         if (!$tools) {

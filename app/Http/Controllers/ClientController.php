@@ -6,6 +6,7 @@ use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
@@ -24,8 +25,10 @@ class ClientController extends Controller
         // Get the pagination size from the request, default to 10 if not provided
         $perPage = $request->input('perPage', 10);
 
+        $show = $request->input('show_on_landing_page');
+
         // Fetch the FAQs with pagination
-        $clients = $clientQuery->paginate($perPage);
+        $clients = $clientQuery->paginate($perPage)->where('show_on_landing_page', $show);
 
         // Transform the fetched FAQs into a resource collection
         $result = ClientResource::collection($clients);
@@ -54,6 +57,12 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         Log::info($request->all());
         $request->validate([
             'name' => 'required',
@@ -118,6 +127,12 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -170,6 +185,12 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
 
         try {
             $client = Client::find($id);
