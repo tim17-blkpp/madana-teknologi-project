@@ -24,41 +24,18 @@ const authV2LoginIllustration = useGenerateImageVariant(authV2LoginIllustrationL
 const router = useRouter()
 const route = useRoute()
 
-// async function login() {
-//   try {
-//     await axios.get('/sanctum/csrf-cookie')
-
-//     const response = await axios.post('/api/login', {
-//       email: form.value.email,
-//       password: form.value.password,
-//     })
-
-//     if (response.status === 200) {
-//       router.push({ name: 'index' })
-//     }
-//     else {
-//       console.error('Login failed')
-//     }
-//   }
-//   catch (error) {
-//     console.error(error)
-//   }
-// }
 const login = () => {
   axios.post('/api/login', {
     email: form.value.email,
     password: form.value.password,
   }).then(response => {
-    console.log(response)
+    localStorage.removeItem('userAbilities')
 
-    // localStorage.removeItem('userAbilities')
+    const accessToken = response.data.token
 
-    // const abilities = response.data.abilities
-    const abilities = [{
-      action: 'manage',
-      subject: 'Auth',
-    }]
+    const abilities = response.data.abilities
 
+    localStorage.setItem('accessToken', JSON.stringify(accessToken))
     localStorage.setItem('userAbilities', JSON.stringify(abilities))
     ability.update(abilities)
 

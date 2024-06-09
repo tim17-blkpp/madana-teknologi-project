@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\PublicProjectResource;
 use App\Models\Gallery;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +16,12 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         // Get the search keyword from the request
         $searchKeyword = $request->input('search');
 
@@ -23,9 +30,6 @@ class ProjectController extends Controller
 
         // Get the pagination size from the request, default to 10 if not provided
         $perPage = $request->input('perPage', 10);
-
-        $show = $request->input('show_on_landing_page');
-        dd($show);
 
         // Fetch the FAQs with pagination
         $projects = $projectQuery->paginate($perPage);
@@ -43,6 +47,32 @@ class ProjectController extends Controller
             ]
         ]);
     }
+
+    public function publicProjects(Request $request)
+    {
+        $category = $request->input('category');
+
+        $projectsQuery = Project::where('show_on_landing_page', 1)
+            ->when($category, function ($query, $category) {
+                return $query->where('category_id', $category);
+            });
+
+        // Apply pagination to the query before getting the results
+        $projects = $projectsQuery->paginate(10);
+
+        // Create a resource collection with the paginated result
+        $result = PublicProjectResource::collection($projects);
+
+        return $result->additional([
+            'pagination' => [
+                'total' => $projects->total(),
+                'perPage' => $projects->perPage(),
+                'currentPage' => $projects->currentPage(),
+                'lastPage' => $projects->lastPage(),
+            ]
+        ]);
+    }
+
 
     public function create()
     {

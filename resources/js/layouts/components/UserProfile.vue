@@ -1,5 +1,25 @@
 <script setup>
+import axios from '@axios'
 import avatar1 from '@images/avatars/avatar-1.png'
+import { useRouter } from 'vue-router'
+
+
+const router = useRouter()
+
+// const ability = useAppAbility()
+
+const logout = () => {
+  axios.post('/api/logout').then(() => {
+
+    // Remove "accessToken" from localStorage
+    localStorage.removeItem('accessToken')
+
+    // Remove "userAbilities" from localStorage
+    localStorage.removeItem('userAbilities')
+    
+    router.push('/login')
+  })
+}
 </script>
 
 <template>
@@ -48,70 +68,16 @@ import avatar1 from '@images/avatars/avatar-1.png'
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              Madana Teknologi
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
-          </VListItem>
-
-          <VDivider class="my-2" />
-
-          <!-- 👉 Profile -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-user"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Profile</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Settings -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-settings"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Settings</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Pricing -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-currency-dollar"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Pricing</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 FAQ -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-help"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>FAQ</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -120,7 +86,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
               />
             </template>
 
-            <VListItemTitle>Logout</VListItemTitle>
+            <VListItemTitle>Keluar</VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>

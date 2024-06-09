@@ -17,6 +17,12 @@ class ToolsController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         // Get the search keyword from the request
         $searchKeyword = $request->input('search');
 
@@ -33,6 +39,26 @@ class ToolsController extends Controller
         $result = ToolsResource::collection($tools);
 
         // Return the JSON response with pagination data
+        return $result->additional([
+            'pagination' => [
+                'total' => $tools->total(),
+                'perPage' => $tools->perPage(),
+                'currentPage' => $tools->currentPage(),
+                'lastPage' => $tools->lastPage(),
+            ]
+        ]);
+    }
+
+    public function publicTools()
+    {
+        $toolsQuery = Tools::where('show_on_landing_page', 1);
+
+        // Apply pagination to the query before getting the results
+        $tools = $toolsQuery->paginate(10);
+
+        // Transform the fetched FAQs into a resource collection
+        $result = ToolsResource::collection($tools);
+
         return $result->additional([
             'pagination' => [
                 'total' => $tools->total(),

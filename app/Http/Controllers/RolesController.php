@@ -15,6 +15,12 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         // Get the search keyword from the request
         $searchKeyword = $request->input('search');
 
@@ -31,6 +37,26 @@ class RolesController extends Controller
         $result = RolesResource::collection($roles);
 
         // Return the JSON response with pagination data
+        return $result->additional([
+            'pagination' => [
+                'total' => $roles->total(),
+                'perPage' => $roles->perPage(),
+                'currentPage' => $roles->currentPage(),
+                'lastPage' => $roles->lastPage(),
+            ]
+        ]);
+    }
+
+    public function publicRoles()
+    {
+        $rolesQuery = Roles::where('show_on_landing_page', 1);
+
+        // Apply pagination to the query before getting the results
+        $roles = $rolesQuery->paginate(10);
+
+        // Transform the fetched FAQs into a resource collection
+        $result = RolesResource::collection($roles);
+
         return $result->additional([
             'pagination' => [
                 'total' => $roles->total(),

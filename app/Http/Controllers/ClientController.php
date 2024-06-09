@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ClientResource;
+use App\Http\Resources\PublicClientResource;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,12 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         // Get the search keyword from the request
         $searchKeyword = $request->input('search');
 
@@ -25,13 +32,32 @@ class ClientController extends Controller
         // Get the pagination size from the request, default to 10 if not provided
         $perPage = $request->input('perPage', 10);
 
-        $show = $request->input('show_on_landing_page');
-
         // Fetch the FAQs with pagination
-        $clients = $clientQuery->paginate($perPage)->where('show_on_landing_page', $show);
+        $clients = $clientQuery->paginate($perPage);
 
         // Transform the fetched FAQs into a resource collection
         $result = ClientResource::collection($clients);
+
+        // Return the JSON response with pagination data
+        return $result->additional([
+            'pagination' => [
+                'total' => $clients->total(),
+                'perPage' => $clients->perPage(),
+                'currentPage' => $clients->currentPage(),
+                'lastPage' => $clients->lastPage(),
+            ]
+        ]);
+    }
+
+    public function publicClients()
+    {
+        $clientsQuery = Client::where('show_on_landing_page', 1);
+
+        // Apply pagination to the query before getting the results
+        $clients = $clientsQuery->paginate(10);
+
+        // Transform the fetched FAQs into a resource collection
+        $result = PublicClientResource::collection($clients);
 
         // Return the JSON response with pagination data
         return $result->additional([

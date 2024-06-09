@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/madana', function () {
-    return view('madana');
-});
-
 Route::get('{any?}', function () {
     return view('application');
 })->where('any', '.*');

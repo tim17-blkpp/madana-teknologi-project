@@ -15,6 +15,12 @@ class FaqController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
         // Get the search keyword from the request
         $searchKeyword = $request->input('search');
 
@@ -32,6 +38,26 @@ class FaqController extends Controller
         $faqsResource = FaqResource::collection($faqs);
 
         // Return the JSON response with pagination data
+        return $faqsResource->additional([
+            'pagination' => [
+                'total' => $faqs->total(),
+                'perPage' => $faqs->perPage(),
+                'currentPage' => $faqs->currentPage(),
+                'lastPage' => $faqs->lastPage(),
+            ]
+        ]);
+    }
+
+    public function publicFaqs()
+    {
+        $faqsQuery = Faq::all();
+
+        // Apply pagination to the query before getting the results
+        $faqs = $faqsQuery->paginate(10);
+
+        // Transform the fetched FAQs into a resource collection
+        $faqsResource = FaqResource::collection($faqs);
+
         return $faqsResource->additional([
             'pagination' => [
                 'total' => $faqs->total(),
