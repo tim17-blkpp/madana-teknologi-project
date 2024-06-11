@@ -50,10 +50,9 @@ class FaqController extends Controller
 
     public function publicFaqs()
     {
-        $faqsQuery = Faq::all();
+        $faqs = Faq::paginate(10);
 
         // Apply pagination to the query before getting the results
-        $faqs = $faqsQuery->paginate(10);
 
         // Transform the fetched FAQs into a resource collection
         $faqsResource = FaqResource::collection($faqs);

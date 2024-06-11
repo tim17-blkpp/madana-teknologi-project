@@ -106,6 +106,7 @@ const login = () => {
               <!-- email -->
               <VCol cols="12">
                 <VTextField
+                  id="email-input"
                   v-model="form.email"
                   autofocus
                   label="Email"
@@ -117,6 +118,7 @@ const login = () => {
               <!-- password -->
               <VCol cols="12">
                 <VTextField
+                  id="password-input"
                   v-model="form.password"
                   label="Password"
                   placeholder="············"
@@ -126,6 +128,7 @@ const login = () => {
                 />
 
                 <VBtn
+                  id="login-btn"
                   block
                   type="submit"
                   class="mt-4"
