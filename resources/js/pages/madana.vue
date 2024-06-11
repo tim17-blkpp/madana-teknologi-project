@@ -110,6 +110,38 @@
         color: white !important;
         border-color: #335C94;
     }
+
+    .hover-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(51, 92, 148, 0.8); /* Warna biru dengan opacity */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8em;
+      text-align: center;
+  }
+
+  .overlay-grid{
+      text-align: left;
+  }
+  .card:hover .hover-overlay {
+      opacity: 1;
+  }
+
+  .hover-text {
+      display: flex;
+  }
+
+  .card:hover .hover-text {
+      display: block;
+  }
     @media (max-width: 600px) {
         .nav-item {
             margin: 0 20px 10px;
@@ -219,7 +251,7 @@
                         <a class="nav-link active" href="#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="portofolio.html">Portofolio</a>
+                        <a class="nav-link active" href="/portofolio">Portofolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Tools</a>
@@ -295,147 +327,138 @@
     </section>
     <!-- About End -->
 
-    <!-- Portofolio Start -->
-    <section id="portofolio" class="light-blue-color">
+<!-- Portfolio Start -->
+  <section id="portofolio" class="light-blue-color">
     <div class="row text-center mb-4 mt-3">
-        <div class="col">
-            <h2>Portofolio</h2>
-        </div>
+      <div class="col">
+        <h2>Portofolio</h2>
+      </div>
     </div>
-    <div id="carouselExampleControls" class="carousel slide container">
-        <div class="carousel-inner porto-section-pc">
-            <div class="carousel-item" v-for="(project, index) in projects" :class="{ active: index === 0 }" :key="project.id">
-                <div class="row container mx-auto justify-content-center">
-                    <div class="col-sm-3 col-6 mb-3 px-3" v-for="i in 3" :key="i">
-                        <div class="card shadow-content rounded-4">
-                            <img :src="project.thumbnail_path" class="card-img-top rounded-top-4" alt="...">
-                            <div class="card-body blue-font d-flex justify-content-center text-center">
-                                <div class="p-3">
-                                    <h5 class="card-title">{{ project.name }}</h5>
-                                    <p class="card-text">({{ new Date(project.end_date).getFullYear() }})</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div id="carouselExampleControls" class="carousel slide container" data-bs-ride="carousel">
+      <div class="carousel-inner porto-section-pc">
+        <div class="carousel-item" v-for="(chunk, index) in projectChunks" :class="{ active: index === 0 }" :key="index">
+          <div class="row container mx-auto justify-content-center">
+            <div class="col-sm-3 col-6 mb-3 px-3" v-for="project in chunk" :key="project.id" >
+              <div class="card shadow-content rounded-4">
+                <img :src="project.thumbnail_path" class="card-img-top rounded-top-4 w-100" alt="..." style="height: 150px">
+                <div class="card-body blue-font d-flex justify-content-center text-center">
+                  <div class="p-3">
+                    <h5 class="card-title">{{ project.name }}</h5>
+                    <p class="card-text">({{ new Date(project.end_date).getFullYear() }})</p>
+                  </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="porto-section-mobile">
-            <div class="col-12" v-for="project in projects" :key="project.id">
-                <div class="card mb-4 rounded-3 shadow-content">
-                    <div class="row g-0">
-                        <div class="col-lg-2 col-5">
-                            <img :src="project.thumbnail_path" alt="" width="100%" height="100%">
-                        </div>
-                        <div class="col-lg-10 col-7 d-flex align-items-center px-3">
-                            <div class="card-body w-100 blue-font">
-                                <h5 class="card-title mt-auto">{{ project.name }}</h5>
-                                <p class="card-title mb-auto">({{ new Date(project.end_date).getFullYear() }})</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="hover-overlay rounded-4">
+                  <div class="hover-text p-4">
+                    <p class="fw-normal">{{ project.description }}</p>
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="col-12 mb-3">
-                <a href="portofolio.html">
-                    <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color">See More</button>
-                </a>
-            </div>
+          </div>
         </div>
-        <button class="carousel-control-prev d-flex justify-content-start" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <img src="/img/assets/arrow-left.png" alt="..." width="24px">
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next d-flex justify-content-end" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <img src="/img/assets/arrow-right.png" alt="..." width="24px">
-            <span class="visually-hidden">Next</span>
-        </button>
+      </div>
+      <button class="carousel-control-prev d-flex justify-content-start" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <img src="/img/assets/arrow-left.png" alt="..." width="24px">
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next d-flex justify-content-end" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <img src="/img/assets/arrow-right.png" alt="..." width="24px">
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <div class="porto-section-mobile">
+      <div class="col-12" v-for="project in projects" :key="project.id">
+        <div class="card mb-4 rounded-3 shadow-content">
+          <div class="row g-0">
+            <div class="col-lg-2 col-5">
+              <img :src="project.thumbnail_path" alt="" width="100%" height="100%">
+            </div>
+            <div class="col-lg-10 col-7 d-flex align-items-center px-3">
+              <div class="card-body w-100 blue-font">
+                <h5 class="card-title mt-auto">{{ project.name }}</h5>
+                <p class="card-title mb-auto">({{ new Date(project.end_date).getFullYear() }})</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mb-3">
+        <a href="portofolio.html">
+          <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color">See More</button>
+        </a>
+      </div>
     </div>
   </section>
-    <!-- Portofolio End -->
+  <!-- Portfolio End -->
 
-    <!-- Tools Start -->
-    <section id="tools" class="light-blue-color">
-      <div class="row text-center mb-4">
-        <div class="col">
-          <h2>Tools</h2>
-        </div>
+  <!-- Tools Start -->
+  <section id="tools" class="light-blue-color">
+    <div class="row text-center mb-4">
+      <div class="col">
+        <h2>Tools</h2>
       </div>
-      <div class="container mb-5">
-        <div class="row text-center justify-content-center">
-          <div 
-            v-for="tool in tools" 
-            :key="tool.id" 
-            class="col-lg-2 col-6 mb-3">
-            <div class="d-flex justify-content-center align-items-center bg-light rounded-3 shadow-content py-3 mb-3">
-              <img :src="tool.icon" alt="..." class="me-3" style="width: 25%;">
-              <h5 class="my-auto">{{ tool.name }}</h5>
-            </div>
+    </div>
+    <div class="container mb-5">
+      <div class="row text-center justify-content-center">
+        <div v-for="tool in tools" :key="tool.id" class="col-lg-2 col-6 mb-3">
+          <div class="d-flex justify-content-center align-items-center bg-light rounded-3 shadow-content py-3 mb-3">
+            <img :src="tool.icon" alt="..." class="me-3" style="width: 25%;">
+            <h5 class="my-auto">{{ tool.name }}</h5>
           </div>
         </div>
       </div>
-    </section>
-    <!-- Tools End -->
+    </div>
+  </section>
+  <!-- Tools End -->
 
-    <!-- Roles Start -->
-    <section id="roles" class="dark-blue-color">
-      <div class="row text-center mb-4">
-        <div class="col text-white">
-          <h2>Roles</h2>
-        </div>
+  <!-- Roles Start -->
+  <section id="roles" class="dark-blue-color">
+    <div class="row text-center mb-4">
+      <div class="col text-white">
+        <h2>Roles</h2>
       </div>
-      <div class="container">
-        <div class="row text-center justify-content-center">
-          <div 
-            v-for="role in roles" 
-            :key="role.id" 
-            class="col-lg-3 col-6 mb-4">
-            <div class="justify-content-center align-items-center text-white mb-3">
-              <img :src="role.icon" alt="..." class="mb-3">
-              <h4 class="my-auto">{{ role.name }}</h4>
-            </div>
+    </div>
+    <div class="container">
+      <div class="row text-center justify-content-center">
+        <div v-for="role in roles" :key="role.id" class="col-lg-3 col-6 mb-4">
+          <div class="justify-content-center align-items-center text-white mb-3">
+            <img :src="role.icon" alt="..." class="mb-3">
+            <h4 class="my-auto">{{ role.name }}</h4>
           </div>
         </div>
       </div>
-    </section>
-    <!-- Roles End -->
+    </div>
+  </section>
+  <!-- Roles End -->
 
-    <!-- Company Start -->
-    <section id="company">
-      <div class="row text-center mb-4">
-        <div class="col">
-          <h2>Companies We Have Worked With</h2>
-        </div>
+  <!-- Company Start -->
+  <section id="company">
+    <div class="row text-center mb-4">
+      <div class="col">
+        <h2>Companies We Have Worked With</h2>
       </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div 
-            v-for="client in clients" 
-            :key="client.id" 
-            class="col-sm-2">
-            <div class="py-3 shadow-content d-flex justify-content-center mb-4">
-              <img :src="client.logo" alt="...">
-            </div>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div v-for="client in clients" :key="client.id" class="col-sm-2">
+          <div class="py-3 shadow-content d-flex justify-content-center mb-4">
+            <img :src="client.logo" alt="...">
           </div>
         </div>
       </div>
-    </section>
-    <!-- Company End -->
+    </div>
+  </section>
+  <!-- Company End -->
 
-    <!-- Faq Start -->
-      <section id="faq" style="margin-bottom: 50px;">
+  <!-- FAQ Start -->
+  <section id="faq" style="margin-bottom: 50px;">
     <div class="row text-center mb-4">
       <div class="col">
         <h2>FAQs</h2>
       </div>
     </div>
     <div class="container">
-      <div 
-        v-for="faq in faqs" 
-        :key="faq.id" 
-        class="card mb-4 rounded-3 shadow-content"
-      >
+      <div v-for="faq in faqs" :key="faq.id" class="card mb-4 rounded-3 shadow-content">
         <div class="row g-0">
           <div class="col-md-1">
             <div class="dark-blue-color h-100" style="width: 15%; border-radius: 5px 0 0 5px;"></div>
@@ -450,186 +473,183 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-lg-2 col-12 justify-content-center d-flex">
-          <button 
-            v-if="hasMore" 
-            @click="loadMore" 
-            type="button" 
-            class="btn btn-outline-primary w-100 p-2"
-          >
-            See More
-          </button>
+          <button v-if="hasMore" @click="loadMore" type="button" class="btn btn-outline-primary w-100 p-2">See More</button>
         </div>
       </div>
     </div>
   </section>
-    <!-- Faq End -->
+  <!-- FAQ End -->
 
-    <!-- Contact Start -->
-    <section id="contact">
-      <div class="row text-center mb-4">
-        <div class="col">
-            <h2>Contact Us</h2>
+  <!-- Contact Start -->
+  <section id="contact">
+    <div class="row text-center mb-4">
+      <div class="col">
+        <h2>Contact Us</h2>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 contact-maps">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.1721583335443!2d110.37512507419902!3d-7.771561592247833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59b2d4729729%3A0xac4d7b5fcf34f8e4!2sGadjah%20Mada%20University!5e0!3m2!1sen!2sid!4v1717123842004!5m2!1sen!2sid" class="w-100" style="aspect-ratio: 1.25;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>          
+        </div>
+        <div class="col-lg-6">
+          <form>
+            <div class="mb-3">
+              <input type="name" class="form-control py-2 px-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Name">
+            </div>
+            <div class="mb-3">
+              <input type="email" class="form-control py-2 px-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
+            </div>
+            <div class="mb-3">
+              <input type="phone" class="form-control py-2 px-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Phone Number">
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" id="form4Example3" rows="11"></textarea>
+            </div>
+            <button type="submit" class="float-end btn dark-blue-color text-white contact-submit px-5">Submit</button>
+          </form>
         </div>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 contact-maps">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.1721583335443!2d110.37512507419902!3d-7.771561592247833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59b2d4729729%3A0xac4d7b5fcf34f8e4!2sGadjah%20Mada%20University!5e0!3m2!1sen!2sid!4v1717123842004!5m2!1sen!2sid" class="w-100" style="aspect-ratio: 1.25;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>          
-          </div>
-          <div class="col-lg-6">
-            <form>
-              <div class="mb-3">
-                <input type="name" class="form-control py-2 px-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Name">
-              </div>
-              <div class="mb-3">
-                <input type="email" class="form-control py-2 px-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
-              </div>
-              <div class="mb-3">
-                <input type="phone" class="form-control py-2 px-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Phone Number">
-              </div>
-              <div class="mb-3">
-                <textarea class="form-control" id="form4Example3" rows="11"></textarea>
-              </div>
-              <button type="submit" class="float-end btn dark-blue-color text-white contact-submit px-5">Submit</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Contact End -->
+    </div>
+  </section>
+  <!-- Contact End -->
 
-    <!-- Footer Start -->
-    <footer class="dark-blue-color text-white text-center text-lg-start">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-5 d-flex align-items-center py-4 footer-icon">
-            <img src="img/assets/footer/footer-madana-icon.png" alt="..." class="h-50">
-            <div class="ms-4">
-              <h4 style="margin: 0;" class="text-white">Madana Innotech</h4>
-              <p class="fw-light text-white">Jl. Alamat Gg Gang 123</p>
-              <div>
-                <img src="img/assets/footer/whatsapp-icon.png" alt="...">
-                <img src="img/assets/footer/twt-icon.png" alt="...">
-                <img src="img/assets/footer/linkedin-icon.png" alt="...">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2 py-4">
-            <p class="fs-4 mb-3 text-white">Feature</p>
+  <!-- Footer Start -->
+  <footer class="dark-blue-color text-white text-center text-lg-start">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 d-flex align-items-center py-4 footer-icon">
+          <img src="img/assets/footer/footer-madana-icon.png" alt="..." class="h-50">
+          <div class="ms-4">
+            <h4 style="margin: 0;" class="text-white">Madana Innotech</h4>
+            <p class="fw-light text-white">Jl. Alamat Gg Gang 123</p>
             <div>
-              <p class="feature-footer mb-3 fw-light text-white">Home</p>
-              <p class="feature-footer mb-3 fw-light text-white">About</p>
-              <p class="feature-footer mb-3 fw-light text-white">Portofolio</p>
-              <p class="feature-footer mb-3 fw-light text-white">FAQs</p>
-              <p class="feature-footer fw-light text-white">Contact</p>
-            </div>
-          </div>
-          <div class="col-lg-2 py-4">
-            <p class="fs-4 mb-3 text-white">Services</p>
-            <div>
-              <p class="feature-footer mb-3 fw-light text-white">Desktop App</p>
-              <p class="feature-footer mb-3 fw-light text-white">Web App</p>
-              <p class="feature-footer fw-light text-white">Mobile App</p>
-            </div>
-          </div>
-          <div class="col-lg py-4">
-            <p class="fs-4 mb-3 text-white">Our Contacts</p>
-            <div>
-              <p class="feature-footer mb-3 fw-light text-white">Email: info@madanatech.com</p>
-              <p class="feature-footer fw-light text-white">Phone: +62 8123123123123</p>
+              <img src="img/assets/footer/whatsapp-icon.png" alt="...">
+              <img src="img/assets/footer/twt-icon.png" alt="...">
+              <img src="img/assets/footer/linkedin-icon.png" alt="...">
             </div>
           </div>
         </div>
+        <div class="col-lg-2 py-4">
+          <p class="fs-4 mb-3 text-white">Feature</p>
+          <div>
+            <p class="feature-footer mb-3 fw-light text-white">Home</p>
+            <p class="feature-footer mb-3 fw-light text-white">About</p>
+            <p class="feature-footer mb-3 fw-light text-white">Portofolio</p>
+            <p class="feature-footer mb-3 fw-light text-white">FAQs</p>
+            <p class="feature-footer fw-light text-white">Contact</p>
+          </div>
+        </div>
+        <div class="col-lg-2 py-4">
+          <p class="fs-4 mb-3 text-white">Services</p>
+          <div>
+            <p class="feature-footer mb-3 fw-light text-white">Desktop App</p>
+            <p class="feature-footer mb-3 fw-light text-white">Web App</p>
+            <p class="feature-footer fw-light text-white">Mobile App</p>
+          </div>
+        </div>
+        <div class="col-lg py-4">
+          <p class="fs-4 mb-3 text-white">Our Contacts</p>
+          <div>
+            <p class="feature-footer mb-3 fw-light text-white">Email: info@madanatech.com</p>
+            <p class="feature-footer fw-light text-white">Phone: +62 8123123123123</p>
+          </div>
+        </div>
       </div>
-      <div class="text-center p-3 dark-blue-color text-white">
-        © Copyright 2023 All Rights Reserved by Madana Innotech
-      </div>
-      <!-- Copyright -->
-    </footer>
-    <!-- Footer End -->
+    </div>
+    <div class="text-center p-3 dark-blue-color text-white">
+      © Copyright 2023 All Rights Reserved by Madana Innotech
+    </div>
+  </footer>
+  <!-- Footer End -->
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      projects: [],
+      projectChunks: [],
+      tools: [],
+      roles: [],
+      clients: [],
+      faqs: [],
+      hasMore: false,
+    };
+  },
+  created() {
+    this.fetchProjects();
+    this.fetchTools();
+    this.fetchRoles();
+    this.fetchClients();
+    this.fetchFaqs();
+  },
+  methods: {
+    async fetchProjects() {
+      try {
+        const response = await axios.get('/api/public/projects');
+        this.projects = response.data.data;
+        this.projectChunks = this.chunkArray(this.projects, 3);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    },
+    async fetchTools() {
+      try {
+        const response = await axios.get('/api/public/tools');
+        this.tools = response.data.data;
+      } catch (error) {
+        console.error('Error fetching tools:', error);
+      }
+    },
+    async fetchRoles() {
+      try {
+        const response = await axios.get('/api/public/roles');
+        this.roles = response.data.data;
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    },
+    async fetchClients() {
+      try {
+        const response = await axios.get('/api/public/clients');
+        this.clients = response.data.data;
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    },
+    async fetchFaqs() {
+      try {
+        const response = await axios.get('/api/public/faqs');
+        this.faqs = response.data.data;
+        this.hasMore = response.data.meta.current_page < response.data.meta.last_page;
+      } catch (error) {
+        console.error('Error fetching faqs:', error);
+      }
+    },
+    chunkArray(array, chunkSize) {
+      const result = [];
+      for (let i = 0; i < array.length; i += chunkSize) {
+        result.push(array.slice(i, i + chunkSize));
+      }
+      return result;
+    },
+    async loadMore() {
+      try {
+        const response = await axios.get(`/api/public/faqs?page=${this.faqs.meta.current_page + 1}`);
+        this.faqs = [...this.faqs, ...response.data.data];
+        this.hasMore = response.data.meta.current_page < response.data.meta.last_page;
+      } catch (error) {
+        console.error('Error loading more faqs:', error);
+      }
+    }
+  }
+};
+</script>
 
 <route lang="yaml">
     meta:
       layout: blank
 </route>
-
-<script>
-  import axios from 'axios';
-
-  export default {
-    data() {
-        return {
-            projects: [],
-            tools: [],
-            roles: [],
-            clients: [],
-            faqs: [],
-            currentPage: 1,
-            lastPage: 1,
-        };
-    },
-    computed: {
-        hasMore() {
-            return this.currentPage < this.lastPage;
-        },
-    },
-    methods: {
-        async fetchProjects() {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/projects');
-                this.projects = response.data.data.filter(project => project.show_on_landing_page);
-            } catch (error) {
-                console.error("Error fetching projects:", error);
-            }
-        },
-        async fetchTools() {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/tools');
-                this.tools = response.data.data.filter(tool => tool.show_on_landing_page);
-            } catch (error) {
-                console.error("Error fetching tools:", error);
-            }
-        },
-        async fetchRoles() {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/roles');
-                this.roles = response.data.data.filter(role => role.show_on_landing_page);
-            } catch (error) {
-                console.error("Error fetching roles:", error);
-            }
-        },
-        async fetchClients() {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/projects/clients');
-                this.clients = response.data.data.filter(client => client.show_on_landing_page);
-            } catch (error) {
-                console.error("Error fetching clients:", error);
-            }
-        },
-        async fetchFaqs() {
-            try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/faqs?page=${this.currentPage}`);
-                this.faqs = [...this.faqs, ...response.data.data];
-                this.currentPage = response.data.meta.current_page;
-                this.lastPage = response.data.meta.last_page;
-            } catch (error) {
-                console.error("Error fetching FAQs:", error);
-            }
-        },
-        loadMore() {
-            if (this.hasMore) {
-                this.currentPage++;
-                this.fetchFaqs();
-            }
-        },
-    },
-    mounted() {
-        this.fetchProjects();
-        this.fetchTools();
-        this.fetchRoles();
-        this.fetchClients();
-        this.fetchFaqs();
-    },
-};
-</script>
