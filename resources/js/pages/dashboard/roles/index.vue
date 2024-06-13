@@ -213,6 +213,7 @@ watchEffect(() => {
                   alt="item.raw.name"
                   width="100"
                   height="100"
+                  style="filter: invert(1);"
                 >
               </VCol>
               <VCol
