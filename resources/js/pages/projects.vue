@@ -422,11 +422,6 @@
     <!-- Footer End -->
 </template>
 
-<route lang="yaml">
-    meta:
-      layout: blank
-</route>
-
 <script>
 import axios from 'axios';
 
@@ -508,5 +503,10 @@ export default {
 };
 
 </script>
+
+<route lang="yaml">
+    meta:
+      layout: blank
+</route>
 
 

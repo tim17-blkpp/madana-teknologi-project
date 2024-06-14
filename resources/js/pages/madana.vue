@@ -112,36 +112,45 @@
     }
 
     .hover-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(51, 92, 148, 0.95); /* Warna biru dengan opacity */
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.8em;
-      text-align: center;
-  }
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(51, 92, 148, 0.8); /* Warna biru dengan opacity */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8em;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 
-  .overlay-grid{
-      text-align: left;
-  }
-  .card:hover .hover-overlay {
-      opacity: 1;
-  }
+.overlay-grid {
+    text-align: left;
+}
 
-  .hover-text {
-      display: flex;
-  }
+.card:hover .hover-overlay {
+    opacity: 1;
+}
 
-  .card:hover .hover-text {
-      display: block;
-  }
+.hover-text {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    word-wrap: break-word; /* Membungkus teks jika terlalu panjang */
+    white-space: normal; /* Membuat teks menjadi multiline jika terlalu panjang */
+}
+
+.card:hover .hover-text {
+    display: block;
+}
+
     @media (max-width: 600px) {
         .nav-item {
             margin: 0 20px 10px;
@@ -220,9 +229,6 @@
         }
         .roles-responsif{
             display: none;
-        }
-        .faq-content{
-          text-align: center;
         }
         .role-icon{
           width: 100% !important;
@@ -352,10 +358,10 @@
                   </div>
                 </div>
                 <div class="hover-overlay rounded-4">
-                  <div class="hover-text p-4">
-                    <p class="fw-normal text-white">{{ project.description }}</p>
-                    <a class="fw-normal text-white" :href="project.url" style="background: none;">Link</a>
-                  </div>
+                    <div class="hover-text p-4">
+                        <p class="fw-normal text-white">{{ project.description }}</p>
+                        <a class="fw-normal text-white" :href="project.url" style="background: none;">Link</a>
+                    </div>
                 </div>
               </div>
             </div>
@@ -478,7 +484,7 @@
             <div class="dark-blue-color h-100" style="width: 15%; border-radius: 5px 0 0 5px;"></div>
           </div>
           <div class="col-md py-3">
-            <div class="card-body w-100 blue-font faq-content">
+            <div class="card-body w-100 blue-font">
               <h5 class="card-title">{{ faq.question }}</h5>
               <p class="card-text">{{ faq.answer }}</p>
             </div>
