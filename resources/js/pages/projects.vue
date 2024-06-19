@@ -196,10 +196,6 @@
           display: none;
       }
 
-      #portofolio{
-          padding: 3rem, 1rem;
-      }
-
       .fixed-whatsapp-icon {
           position: fixed;
           bottom: 30px;
@@ -304,10 +300,18 @@
                     <img v-if="isListView" src="img/assets/porto/list-icon.png" class="py-1">
                     <img v-else src="img/assets/porto/list-icon-row.png" class="py-2">
                 </button>
-                <button type="button" class="btn btn-primary me-2 d-flex dark-blue-color">
+                <button type="button" class="btn btn-primary me-2 d-flex dark-blue-color" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <p class="me-4 my-auto">Filter</p>
-                    <img src="assets/porto/filter-icon.png" class="my-auto">
+                    <img src="img/assets/porto/filter-icon.png" class="my-auto">
                 </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li class="dropdown-item" @click="selectCategory({ name: 'Tampilkan Semua' })">
+                        Tampilkan Semua
+                    </li>
+                    <li v-for="category in categories" :key="category.id" class="dropdown-item" @click="selectCategory(category)">
+                        {{ category.name }} ({{ category.projects_count }})
+                    </li>
+                </ul>
             </div>
             <div v-if="isListView" class="row mx-auto justify-content-center mb-3">
                 <div v-for="project in currentProjects" :key="project.id" class="col-sm-4 mb-4 px-4">
@@ -322,22 +326,23 @@
                         <div class="hover-overlay">
                             <div class="hover-text p-4">
                                 <p class="fw-normal">{{ project.description }}</p>
+                                <a class="fw-normal text-white" :href="project.url" style="background: none;">Link</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div v-else class="container">
+            <div v-else>
                 <div class="row">
                     <div v-for="project in currentProjects" :key="project.id" class="col-12">
                         <div class="card mb-4 rounded-3 shadow-content">
                             <div class="row g-0">
                                 <div class="col-lg-2 col-5">
-                                    <img :src="project.thumbnail_path" alt="" class="w-100" style="height: 100px">
+                                    <img :src="project.thumbnail_path" class="card-img-top w-100" alt="..." style="height: 100%">
                                 </div>
                                 <div class="col-lg-10 col-7 d-flex align-items-center px-3">
                                     <div class="card-body w-100 blue-font">
-                                        <h5 class="card-title mt-auto">{{ project.name }}</h5>
+                                        <h5 class="card-title mt-auto fs-6">{{ project.name }}</h5>
                                         <p class="card-title mb-auto">({{ new Date(project.end_date).getFullYear() }})</p>
                                     </div>
                                 </div>
@@ -356,7 +361,7 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination blue-font d-flex align-items-center">
                             <li v-for="page in pages" class="page-item mx-1" :class="{active: currentPage === page}" @click="changePage(page)">
-                                <a class="page-link" href="#">{{ page }}</a>
+                                <a href="#">{{ page }}</a>
                             </li>
                         </ul>
                     </nav>
@@ -417,11 +422,6 @@
     <!-- Footer End -->
 </template>
 
-<route lang="yaml">
-    meta:
-      layout: blank
-</route>
-
 <script>
 import axios from 'axios';
 
@@ -429,23 +429,35 @@ export default {
     data() {
         return {
             projects: [],
+            categories: [], // Add this line to store categories
             currentPage: 1, // Current active page number
-            projectsPerPage: 9, // Number of projects per page
+            projectsPerPage: 6, // Number of projects per page
             isListView: true, // Control to switch between list view and grid view
+            selectedCategory: null, // To store the selected category
         };
     },
     computed: {
         pages() {
-            return Array.from({ length: Math.ceil(this.projects.length / this.projectsPerPage) }, (_, i) => i + 1);
+            let filteredProjects = this.getFilteredProjects();
+            return Array.from({ length: Math.ceil(filteredProjects.length / this.projectsPerPage) }, (_, i) => i + 1);
         },
         currentProjects() {
             const start = (this.currentPage - 1) * this.projectsPerPage;
             const end = start + this.projectsPerPage;
-            return this.projects.slice(start, end);
+            let filteredProjects = this.getFilteredProjects();
+            return filteredProjects.slice(start, end);
         }
     },
     created() {
         this.fetchProjects();
+        this.fetchCategories(); // Fetch categories on component creation
+        this.updateProjectsPerPage();
+    },
+    mounted() {
+        window.addEventListener('resize', this.updateProjectsPerPage);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.updateProjectsPerPage);
     },
     methods: {
         async fetchProjects() {
@@ -456,12 +468,45 @@ export default {
                 console.error('Error fetching projects:', error);
             }
         },
+        async fetchCategories() {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/projects/categories');
+                this.categories = response.data.data; // Store fetched categories data
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        },
         toggleView() {
             this.isListView = !this.isListView;
         },
         changePage(page) {
             this.currentPage = page;
+        },
+        updateProjectsPerPage() {
+            if (window.innerWidth <= 600) {
+                this.projectsPerPage = 5;
+            } else {
+                this.projectsPerPage = 6; // Sesuaikan jumlah konten per halaman
+            }
+        },
+        getFilteredProjects() {
+            if (this.selectedCategory === null) {
+                return this.projects;
+            }
+            return this.projects.filter(project => project.category === this.selectedCategory.name);
+        },
+        selectCategory(category) {
+            this.selectedCategory = category.name === "Tampilkan Semua" ? null : category;
+            this.currentPage = 1; // Reset pagination saat kategori dipilih
         }
     }
 };
+
 </script>
+
+<route lang="yaml">
+    meta:
+      layout: blank
+</route>
+
+

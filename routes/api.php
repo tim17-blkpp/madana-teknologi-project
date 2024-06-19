@@ -49,16 +49,16 @@ Route::get('/public/roles', [RolesController::class, 'publicRoles']);
 // Route::apiResource('/faqs', FaqController::class)->except(['index', 'show']);
 // Route::apiResource('/projects/categories', CategoryController::class)->except(['index', 'show']);
 // Route::apiResource('/projects/clients', ClientController::class)->except(['index', 'show']);
-// Route::post('/projects/clients/{id}', [ClientController::class, 'update']);
+Route::post('/projects/clients/{id}', [ClientController::class, 'update']);
 
 // Route::apiResource('/projects', ProjectController::class)->except(['index', 'show']);
-// Route::post('/projects/{id}', [ProjectController::class, 'update']);
+Route::post('/projects/{id}', [ProjectController::class, 'update']);
 
 // Route::apiResource('/tools', ToolsController::class)->except(['index', 'show']);
-// Route::post('/tools/{id}', [ToolsController::class, 'update']);
+Route::post('/tools/{id}', [ToolsController::class, 'update']);
 
 // Route::apiResource('/roles', RolesController::class)->except(['index', 'show']);
-// Route::post('/roles/{id}', [RolesController::class, 'update']);
+Route::post('/roles/{id}', [RolesController::class, 'update']);
 
 Route::post('/konfigurasi', [KonfigurasiController::class, 'update']);
 // });
