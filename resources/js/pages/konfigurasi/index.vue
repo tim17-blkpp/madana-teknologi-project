@@ -33,6 +33,8 @@ const formSubmit = async () => {
   const store = useKonfigurasiStore()
 
   try {
+    const response = await store.updateKonfigurasi(konfigurasi.value)
+
     console.log(konfigurasi.value)
 
     // Check the status of the HTTP response
@@ -130,6 +132,21 @@ fetchKonfigurasi()
                 placeholder="Pilih file logo perusahaan"
               />
             </VCol>
+
+            
+            <!-- Preview Logo -->
+            <VCol
+              v-if="konfigurasi.logo"
+              cols="12"
+            >
+              <VImg
+                :src="konfigurasi.logo"
+                alt="Logo Perusahaan"
+                class="mb-4"
+                style="max-width: 100px;"
+              />
+            </VCol> 
+           
 
             <VCol cols="12">
               <VFileInput

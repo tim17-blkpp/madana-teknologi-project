@@ -1,10 +1,15 @@
-import { breakpointsVuetify } from '@vueuse/core'
+// import madanaLogo from '@images/madana_logo.svg?raw'
 import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layouts/enums'
+import { breakpointsVuetify } from '@vueuse/core'
+
+// import logo_png from 'storage/app/public/logo.png'
 
 export const config = {
   app: {
     title: 'title',
-    logo: h('img', { src: '/src/assets/logo.svg' }),
+
+    // logo: h('img', { src: '/src/assets/madana_logo.svg' }),
+    logo: h('img', { src: '/storage/logo.png', alt: 'app-logo' }),
 
     // logo: () => h('img', { src: 'assets/colored-logo.png' }, null),
     contentWidth: ref(ContentWidth.Boxed),

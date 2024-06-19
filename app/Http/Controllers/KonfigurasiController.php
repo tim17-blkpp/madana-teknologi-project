@@ -85,8 +85,8 @@ class KonfigurasiController extends Controller
             if (is_array($logo)) {
                 $logo = $logo[0];
             }
-            $logoName = time() . '_' . $logo->getClientOriginalName();
-            $logoPath = '/storage/' . $logo->storeAs('uploads', $logoName, 'public');
+            $logoName = 'logo.' . $logo->getClientOriginalExtension() ?? 'png';
+            $logoPath = '/storage/' . $logo->storeAs('', $logoName, 'public');
         } else {
             $logoPath = $request->logo ?? null;
         }

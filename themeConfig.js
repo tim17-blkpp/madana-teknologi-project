@@ -2,17 +2,23 @@ import { breakpointsVuetify } from '@vueuse/core'
 import { VIcon } from 'vuetify/components/VIcon'
 
 // ❗ Logo SVG must be imported with ?raw suffix
-import logo from '@images/logo.svg?raw'
+// import logo from '@images/logo.svg?raw'
 import { defineThemeConfig } from '@core'
 import { RouteTransitions, Skins } from '@core/enums'
+
+// import madana_logo_svg from '@images/madana_logo.svg?raw'
+// import madana_logo_png from '@images/madana_logo.png'
 import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layouts/enums'
+
+// import logo_png from 'public/storage/logo.png'
 
 export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
-    title: 'materialize',
+    title: 'Madana Teknologi',
 
     // ❗ if you have SVG logo and want it to adapt according to theme color, you have to apply color as `color: rgb(var(--v-global-theme-primary))`
-    logo: h('div', { innerHTML: logo, style: 'line-height:0; color: rgb(var(--v-global-theme-primary))' }),
+    // logo: h('div', { innerHTML: madana_logo_svg, style: 'line-height:0; color: rgb(var(--v-global-theme-primary));' }),
+    logo: h('img', { src: '/storage/logo.png', alt: 'app-logo' }),
     contentWidth: ContentWidth.Boxed,
     contentLayoutNav: AppContentLayoutNav.Vertical,
     overlayNavFromBreakpoint: breakpointsVuetify.md + 16,

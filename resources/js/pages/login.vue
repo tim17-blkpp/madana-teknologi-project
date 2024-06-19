@@ -52,12 +52,17 @@ const login = () => {
 <template>
   <div class="auth-logo d-flex align-center gap-x-2">
     <div>
-      <VNodeRenderer :nodes="themeConfig.app.logo" />
+      <VNodeRenderer
+        :nodes="themeConfig.app.logo"
+        style="width:90px"
+      />
     </div>
 
-    <h5 class="text-h5 font-weight-bold leading-normal text-capitalize">
+    <!--
+      <h5 class="text-h5 font-weight-bold leading-normal text-capitalize">
       {{ themeConfig.app.title }}
-    </h5>
+      </h5> 
+    -->
   </div>
 
   <VRow
