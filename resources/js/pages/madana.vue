@@ -1,246 +1,4 @@
-<style>
-    * {
-        font-family: 'Poppins', sans-serif !important;
-        color: #000000;
-    }
-
-    .light-blue-color{
-        background-color: #E7F1FF;
-    }
-    .dark-blue-color{
-        background-color: #335C94 !important;
-    }
-    .blue-font{
-        color: #335C94 !important;
-    }
-    .shadow-content{
-        box-shadow: 0px 5px 15px 3px rgba(0,0,0,0.10);
-    }
-    .nav-item {
-        margin-right: 30px;
-    }
-
-    .navbar {
-        padding: 0;
-    }
-
-    .container-fluid {
-        padding-left: 0;
-        padding-right: 75px;
-    }
-
-    .jumbotron-section{
-        width: 100%;
-        position: relative;
-    }
-
-    .jumbotron-section img {
-        width: 100%;
-    }
-
-    .jumbotron-section .row {
-        position: absolute;
-        width: 100%; /* agar row memenuhi lebar jumbotron-section */
-    }
-
-    #projects, #tools, #roles, #company, #faq, #contact{
-        padding: 7rem 1rem;
-    }
-
-    .feature-footer{
-        margin: 0;
-    }
-
-    .page-item{
-        border: solid #335C94; 
-        border-radius: 10px;
-    }
-
-    .pagination a{
-        text-decoration: none;
-        color: #335C94;
-    }
-
-    .row-list{
-        display: none;
-    }
-
-    .button-row{
-        display: none;
-    }
-
-    .btn-show-more{
-        display: none;
-    }
-
-    .fixed-whatsapp-icon {
-        position: fixed;
-        bottom: 60px;
-        right: 60px;
-        width: 80px;  /* Set the width as per the desired size */
-        height: 80px; /* Set the height as per the desired size */
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        z-index: 1000;
-    }
-
-    .porto-section-mobile{
-        display: none;
-    }
-
-    .page-item{
-        width: 35px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .btn-outline-primary {
-        border-color: #335C94;
-        color: #335C94 !important;
-        background-color: transparent !important;
-    }
-
-    .btn-outline-primary:hover,
-    .btn-outline-primary:focus,
-    .btn-outline-primary:active {
-        background-color: #335C94 !important;
-        color: white !important;
-        border-color: #335C94;
-    }
-
-    .hover-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(51, 92, 148, 0.8); /* Warna biru dengan opacity */
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 0.8em;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-.overlay-grid {
-    text-align: left;
-}
-
-.card:hover .hover-overlay {
-    opacity: 1;
-}
-
-.hover-text {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    word-wrap: break-word; /* Membungkus teks jika terlalu panjang */
-    white-space: normal; /* Membuat teks menjadi multiline jika terlalu panjang */
-}
-
-.card:hover .hover-text {
-    display: block;
-}
-
-    @media (max-width: 600px) {
-        .nav-item {
-            margin: 0 20px 10px;
-        }
-        .navbar-collapse {
-            margin: 10px 0 20px;
-        }
-        .get-quote {
-            display: none;
-        }
-        .container-fluid {
-            padding-left: 0;
-            padding-right: 0;
-        }
-        .jumbotron-text {
-            text-align: center;
-        }
-        .jumbotron-section img {
-            height: 70vh;
-            object-fit: cover;
-        }
-
-        #about img{
-            margin-bottom: 40px;
-        }
-
-        .contact-maps{
-            margin-bottom: 20px;
-        }
-
-        .contact-submit{
-            width: 100%;
-        }
-
-        .footer-icon{
-            justify-content: center;
-        }
-
-        .carousel-control-prev,
-        .carousel-control-next {
-            display: none !important;
-        }
-
-        #carouselExampleControls {
-            touch-action: pan-y;
-        }
-        .btn-show-more{
-            display: block;
-        }
-        .show-more-roles{
-            display: none;
-        }
-
-        .fixed-whatsapp-icon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 80px;  /* Set the width as per the desired size */
-            height: 80px; /* Set the height as per the desired size */
-            padding: 0;
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .porto-section-pc{
-            display: none;
-        }
-        
-        .porto-section-mobile{
-            display: block;
-        }
-        #tools, #faq{
-            padding: 2rem 1rem;
-        }
-        .roles-responsif{
-            display: none;
-        }
-        .role-icon{
-          width: 100% !important;
-        }
-    }
-
-    @media (min-width: 600px) {
-        .quote-resp {
-            display: none;
-        }
-    }
-</style>
+<style src="/public/assets/css/style.css"></style>
 
 <template>
     <!-- Navbar Start -->
@@ -251,35 +9,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/projects">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Tools</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Roles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Company</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">FAQs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item quote-resp">
-                        <button type="button" class="btn btn-light w-100" style="color: #335C94 !important;">Get Quote</button>
-                    </li>
-                </ul>
+              <ul class="navbar-nav ms-auto me-auto" id="navbar-links">
+              </ul>
             </div>
             <div class="get-quote">
                 <button type="button" id="downloadButton" class="btn btn-light" style="color: #335C94 !important;">Get Quote</button>
@@ -350,17 +81,16 @@
           <div class="row container mx-auto justify-content-center">
             <div class="col-sm-3 col-6 mb-3 px-3" v-for="project in chunk" :key="project.id" >
               <div class="card shadow-content rounded-4" style="height: 300px;">
-                <img :src="project.thumbnail_path" class="card-img-top rounded-top-4 w-100" alt="..." style="height: 150px">
+                <img :src="project.thumbnail_path" class="card-img-top rounded-top-4 w-100" alt="..." style="height: 170px">
                 <div class="card-body blue-font d-flex justify-content-center text-center">
                   <div class="p-3">
                     <h5 class="card-title">{{ project.name }}</h5>
                     <p class="card-text">({{ new Date(project.end_date).getFullYear() }})</p>
                   </div>
                 </div>
-                <div class="hover-overlay rounded-4">
+                <div class="rounded-4">
                     <div class="hover-text p-4">
-                        <p class="fw-normal text-white">{{ project.description }}</p>
-                        <a class="fw-normal text-white" :href="project.url" style="background: none;">Link</a>
+                      <a class="fs-4 text-white hover-link">See More</a>
                     </div>
                 </div>
               </div>
@@ -393,10 +123,33 @@
           </div>
         </div>
       </div>
-      <div class="col-12 mb-3">
-        <a href="projects">
-          <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color">See More</button>
-        </a>
+      <div class="rounded-4">
+        <div class="hover-text p-4">
+          <a class="fs-4 text-white hover-link">See More</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="projectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 50%; width: auto;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h1 class="modal-title fs-5" id="projectModalLabel">{{ selectedProject.name }}</h1>
+            <p>({{ new Date(selectedProject.end_date).getFullYear() }})</p>
+            <div class="d-flex justify-content-center">
+              <img :src="selectedProject.thumbnail_path" alt="..." class="rounded-4 w-50">
+            </div>
+            <p class="mt-5" style="max-height: 7.5em; overflow-y: auto;">{{ selectedProject.description }}</p>
+          </div>
+          <div class="modal-footer">
+            <a :href="selectedProject.url" class="btn btn-primary dark-blue-color">Link Project</a>
+            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -412,7 +165,7 @@
     <div class="container mb-5">
       <div class="row text-center justify-content-center">
         <div v-for="tool in tools" :key="tool.id" class="col-lg-2 col-6 mb-3">
-          <div class="d-flex justify-content-center align-items-center bg-light rounded-3 shadow-content py-3 mb-3">
+          <div class="d-flex ps-3 align-items-center bg-light rounded-3 shadow-content py-3 mb-3">
             <img :src="tool.icon" alt="..." class="me-3" style="width: 25%; aspect-ratio: 1;">
             <h5 class="my-auto">{{ tool.name }}</h5>
           </div>
@@ -524,7 +277,7 @@
               <input type="phone" class="form-control py-2 px-3" id="phone" aria-describedby="emailHelp" placeholder="Phone Number">
             </div>
             <div class="mb-3">
-              <textarea class="form-control" id="description" rows="11"></textarea>
+              <textarea class="form-control" id="description" rows="11" placeholder="Masukkan Pesan"></textarea>
             </div>
             <button type="submit" class="float-end btn dark-blue-color text-white contact-submit px-5">Submit</button>
           </form>
@@ -552,20 +305,12 @@
         </div>
         <div class="col-lg-2 py-4">
           <p class="fs-4 mb-3 text-white">Feature</p>
-          <div>
-            <p class="feature-footer mb-3 fw-light text-white">Home</p>
-            <p class="feature-footer mb-3 fw-light text-white">About</p>
-            <p class="feature-footer mb-3 fw-light text-white">Projects</p>
-            <p class="feature-footer mb-3 fw-light text-white">FAQs</p>
-            <p class="feature-footer fw-light text-white">Contact</p>
+          <div id="footer-feature-links">
           </div>
         </div>
         <div class="col-lg-2 py-4">
           <p class="fs-4 mb-3 text-white">Services</p>
-          <div>
-            <p class="feature-footer mb-3 fw-light text-white">Desktop App</p>
-            <p class="feature-footer mb-3 fw-light text-white">Web App</p>
-            <p class="feature-footer fw-light text-white">Mobile App</p>
+          <div id="footer-service-links">
           </div>
         </div>
         <div class="col-lg py-4">
@@ -597,6 +342,18 @@ export default {
       clients: [],
       faqs: [],
       hasMore: false,
+      selectedProject: {},
+      navLinks: [
+        { text: 'Home', href: '#home' },
+        { text: 'About', href: '#about' },
+        { text: 'Projects', href: '/projects' },
+        { text: 'Tools', href: '#tools' },
+        { text: 'Roles', href: '#roles' },
+        { text: 'Company', href: '#company' },
+        { text: 'FAQs', href: '#faq' },
+        { text: 'Contact', href: '#contact' }
+      ],
+      categories: []
     };
   },
   created() {
@@ -605,6 +362,7 @@ export default {
     this.fetchRoles();
     this.fetchClients();
     this.fetchFaqs();
+    this.fetchCategories();
   },
   methods: {
     async fetchProjects() {
@@ -649,6 +407,16 @@ export default {
         console.error('Error fetching faqs:', error);
       }
     },
+    async fetchCategories() {
+      try {
+        const response = await axios.get('/api/projects/categories');
+        this.categories = response.data.data;
+        this.services = this.categories.map(category => `${category.name} App`);
+        this.populateFooterServices();
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    },
     chunkArray(array, chunkSize) {
       const result = [];
       for (let i = 0; i < array.length; i += chunkSize) {
@@ -673,9 +441,64 @@ export default {
       link.click();
       document.body.removeChild(link);
     },
+    selectProject(project) {
+      this.selectedProject = project;
+    },
+    populateNavbarAndFooter() {
+      const navbar = document.getElementById('navbar-links');
+      const footerFeatureLinks = document.getElementById('footer-feature-links');
+
+      this.navLinks.forEach(link => {
+        const li = document.createElement('li');
+        li.classList.add('nav-item');
+        const a = document.createElement('a');
+        a.classList.add('nav-link');
+        a.classList.add('text-white');
+        a.href = link.href;
+        a.textContent = link.text;
+        li.appendChild(a);
+        navbar.appendChild(li);
+      });
+
+      // Add quote-resp button at the end if screen width is below 600px
+      if (window.innerWidth <= 600) {
+        const li = document.createElement('li');
+        li.classList.add('nav-item');
+        li.innerHTML = `
+          <div class="quote-resp">
+            <button type="button" id="downloadButton" class="btn btn-light w-100" style="color: #335C94 !important;">Get Quote</button>
+          </div>
+        `;
+        navbar.appendChild(li);
+      }
+
+      this.navLinks.slice(0, -1).forEach(link => { // skip "Get Quote"
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.classList.add('text-decoration-none'); // Optional, to remove underline from links
+
+        const p = document.createElement('p');
+        p.classList.add('feature-footer', 'mb-3', 'fw-light', 'text-white');
+        p.textContent = link.text;
+        
+        a.appendChild(p);
+        footerFeatureLinks.appendChild(a);
+      });
+    },
+    populateFooterServices() {
+      const footerServiceLinks = document.getElementById('footer-service-links');
+      footerServiceLinks.innerHTML = ''; // Clear existing links
+      this.services.forEach(service => {
+        const p = document.createElement('p');
+        p.classList.add('feature-footer', 'mb-3', 'fw-light', 'text-white');
+        p.textContent = service;
+        footerServiceLinks.appendChild(p);
+      });
+    }
   },
   mounted() {
     document.getElementById("downloadButton").addEventListener("click", this.downloadFile);
+    this.populateNavbarAndFooter();
   },
 };
 </script>
