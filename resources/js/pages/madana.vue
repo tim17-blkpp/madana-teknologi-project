@@ -51,16 +51,16 @@
     </a>
 
     <!-- About Start -->
-    <section id="about" class="vh-100 d-flex align-items-center">
+    <section id="about" class="d-flex align-items-center">
       <div class="container">
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6 d-flex align-items-center">
             <img src="img/assets/about-content.png" alt="..." class="w-100">
           </div>
           <div class="col-sm-6 d-flex align-items-center">
             <div>
               <p class="h2 mb-3">About</p>
-              <p >Donec in auctor est, in vulputate nisi. Vestibulum tristique eros enim, sed feugiat enim ornare sit amet. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse et metus sit amet velit pulvinar fringilla. In quis mi eget eros hendrerit sodales. Integer rutrum mollis sapien. Praesent ipsum velit, bibendum tempor nisi id, tempor vestibulum felis. Maecenas suscipit enim quis sapien ultricies, in lacinia sapien vestibulum. Cras feugiat, enim quis rhoncus pulvinar, nulla nunc pretium libero, lobortis posuere libero dui.</p>
+              <p>{{ konfigurasi.deskripsi }}</p>
             </div>
           </div>
         </div>
@@ -79,19 +79,19 @@
       <div class="carousel-inner porto-section-pc">
         <div class="carousel-item" v-for="(chunk, index) in projectChunks" :class="{ active: index === 0 }" :key="index">
           <div class="row container mx-auto justify-content-center">
-            <div class="col-sm-3 col-6 mb-3 px-3" v-for="project in chunk" :key="project.id" >
-              <div class="card shadow-content rounded-4" style="height: 300px;">
+            <div class="col-sm-3 col-6 mb-3 px-3" v-for="project in chunk" :key="project.id">
+              <div class="card shadow-content rounded-4" style="height: 300px;" @click="selectProject(project)">
                 <img :src="project.thumbnail_path" class="card-img-top rounded-top-4 w-100" alt="..." style="height: 170px">
-                <div class="card-body blue-font d-flex justify-content-center text-center">
+                <div class="card-body d-flex justify-content-center text-center">
                   <div class="p-3">
-                    <h5 class="card-title">{{ project.name }}</h5>
-                    <p class="card-text">({{ new Date(project.end_date).getFullYear() }})</p>
+                    <h5 class="card-title blue-font">{{ project.name }}</h5>
+                    <p class="card-text blue-font">({{ new Date(project.end_date).getFullYear() }})</p>
                   </div>
                 </div>
-                <div class="rounded-4">
-                    <div class="hover-text p-4">
-                      <a class="fs-4 text-white hover-link">See More</a>
-                    </div>
+                <div class="rounded-4 hover-overlay">
+                  <div class="hover-text p-4">
+                    <a class="fs-4 text-white hover-link" data-bs-toggle="modal" data-bs-target="#projectModal">See More</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -108,31 +108,29 @@
       </button>
     </div>
     <div class="porto-section-mobile container">
-      <div class="col-12" v-for="project in projects" :key="project.id">
-        <div class="card mb-4 rounded-3 shadow-content">
+      <div class="col-12" v-for="(project, index) in projects.slice(0, 5)" :key="project.id">
+        <div class="card mb-4 rounded-3 shadow-content" @click="selectProject(project)">
           <div class="row g-0">
             <div class="col-lg-2 col-5">
-                <img :src="project.thumbnail_path" class="card-img-top w-100" alt="..." style="height: 100%">
+              <img :src="project.thumbnail_path" class="card-img-top w-100" alt="..." style="height: 100%">
             </div>
             <div class="col-lg-10 col-7 d-flex align-items-center px-3">
-              <div class="card-body w-100 blue-font">
-                <h5 class="card-title mt-auto fs-6">{{ project.name }}</h5>
-                <p class="card-title mb-auto">({{ new Date(project.end_date).getFullYear() }})</p>
+              <div class="card-body w-100" data-bs-toggle="modal" data-bs-target="#projectModal">
+                <h5 class="card-title mt-auto fs-6 blue-font">{{ project.name }}</h5>
+                <p class="card-title mb-auto blue-font">({{ new Date(project.end_date).getFullYear() }})</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="rounded-4">
-        <div class="hover-text p-4">
-          <a class="fs-4 text-white hover-link">See More</a>
-        </div>
+      <div class="text-center">
+        <a href="/projects" class="btn btn-primary dark-blue-color w-100">Show More</a>
       </div>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="projectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" style="max-width: 50%; width: auto;">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -162,18 +160,20 @@
         <h2>Tools</h2>
       </div>
     </div>
-    <div class="container mb-5">
+    <div class="container">
       <div class="row text-center justify-content-center">
-        <div v-for="tool in tools" :key="tool.id" class="col-lg-2 col-6 mb-3">
+        <div v-for="(tool, index) in tools.slice(0, maxToolsToShow)" :key="tool.id" class="col-lg-2 col-6 mb-3">
           <div class="d-flex ps-3 align-items-center bg-light rounded-3 shadow-content py-3 mb-3">
             <img :src="tool.icon" alt="..." class="me-3" style="width: 25%; aspect-ratio: 1;">
-            <h5 class="my-auto">{{ tool.name }}</h5>
+            <h6 class="my-auto">{{ tool.name }}</h6>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 mb-3 container">
-      <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color">See More</button>
+    <div class="col-12 mb-5 container" v-if="tools.length > 6">
+      <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color" @click="toggleShowMore('tools')">
+        {{ maxToolsToShow === tools.length ? 'See Less' : 'See More' }}
+      </button>
     </div>
   </section>
   <!-- Tools End -->
@@ -187,7 +187,7 @@
     </div>
     <div class="container">
       <div class="row text-center justify-content-center">
-        <div v-for="role in roles" :key="role.id" class="col-lg-3 col-6 mb-4">
+        <div v-for="(role, index) in roles.slice(0, maxRolesToShow)" :key="role.id" class="col-lg-3 col-6 mb-4">
           <div class="justify-content-center align-items-center text-white mb-3">
             <img :src="role.icon" alt="..." class="mb-3 w-50 role-icon" style="aspect-ratio: 1;">
             <h4 class="my-auto">{{ role.name }}</h4>
@@ -195,8 +195,10 @@
         </div>
       </div>
     </div>
-    <div class="col-12">
-      <button type="button" class="btn w-100 p-2 blue-font btn-show-more bg-light">See More</button>
+    <div class="col-12 container" v-if="roles.length > 4">
+      <button type="button" class="btn w-100 p-2 blue-font btn-show-more bg-light" @click="toggleShowMore('roles')">
+        {{ maxRolesToShow === roles.length ? 'See Less' : 'See More' }}
+      </button>
     </div>
   </section>
   <!-- Roles End -->
@@ -210,15 +212,17 @@
     </div>
     <div class="container">
       <div class="row justify-content-center">
-        <div v-for="client in clients" :key="client.id" class="col-sm-2 rounded-4">
+        <div v-for="(client, index) in clients.slice(0, maxClientsToShow)" :key="client.id" class="col-sm-2 rounded-4">
           <div class="py-3 shadow-content d-flex justify-content-center mb-4">
             <img :src="client.logo" alt="..." style="width: 30%; aspect-ratio: 1;">
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 mb-3 container">
-      <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color">See More</button>
+    <div class="col-12 mb-3 container" v-if="clients.length > 5">
+      <button type="button" class="btn w-100 p-2 text-white btn-show-more dark-blue-color" @click="toggleShowMore('clients')">
+        {{ maxClientsToShow === clients.length ? 'See Less' : 'See More' }}
+      </button>
     </div>
   </section>
   <!-- Company End -->
@@ -231,7 +235,7 @@
       </div>
     </div>
     <div class="container">
-      <div v-for="faq in faqs" :key="faq.id" class="card mb-4 rounded-3 shadow-content">
+      <div v-for="faq in faqs.slice(0, maxFaqsToShow)" :key="faq.id" class="card mb-4 rounded-3 shadow-content">
         <div class="row g-0">
           <div class="col-md-1">
             <div class="dark-blue-color h-100" style="width: 15%; border-radius: 5px 0 0 5px;"></div>
@@ -244,14 +248,17 @@
           </div>
         </div>
       </div>
-      <div class="row justify-content-center">
+      <div class="row justify-content-center" v-if="faqs.length > 5">
         <div class="col-lg-2 col-12 justify-content-center d-flex">
-          <button v-if="hasMore" @click="loadMore" type="button" class="btn btn-outline-primary w-100 p-2">See More</button>
+          <button type="button" class="btn btn-outline-primary w-100 p-2" @click="toggleShowMore('faqs')">
+            {{ maxFaqsToShow === faqs.length ? 'See Less' : 'See More' }}
+          </button>
         </div>
       </div>
     </div>
   </section>
   <!-- FAQ End -->
+
 
   <!-- Contact Start -->
   <section id="contact">
@@ -263,21 +270,21 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 contact-maps">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.1721583335443!2d110.37512507419902!3d-7.771561592247833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59b2d4729729%3A0xac4d7b5fcf34f8e4!2sGadjah%20Mada%20University!5e0!3m2!1sen!2sid!4v1717123842004!5m2!1sen!2sid" class="w-100" style="aspect-ratio: 1.25;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>          
+          <div id="map" class="w-100 h-100"></div>
         </div>
         <div class="col-lg-6">
-          <form>
+          <form @submit.prevent="submitContactForm">
             <div class="mb-3">
-              <input type="name" class="form-control py-2 px-3" id="name" aria-describedby="emailHelp" placeholder="Name">
+              <input type="text" class="form-control py-2 px-3" v-model="contactForm.name" placeholder="Name">
             </div>
             <div class="mb-3">
-              <input type="email" class="form-control py-2 px-3" id="email" aria-describedby="emailHelp" placeholder="Email">
+              <input type="email" class="form-control py-2 px-3" v-model="contactForm.email" placeholder="Email">
             </div>
             <div class="mb-3">
-              <input type="phone" class="form-control py-2 px-3" id="phone" aria-describedby="emailHelp" placeholder="Phone Number">
+              <input type="tel" class="form-control py-2 px-3" v-model="contactForm.phone" placeholder="Phone Number">
             </div>
             <div class="mb-3">
-              <textarea class="form-control" id="description" rows="11" placeholder="Masukkan Pesan"></textarea>
+              <textarea class="form-control" v-model="contactForm.message" rows="11" placeholder="Masukkan Pesan"></textarea>
             </div>
             <button type="submit" class="float-end btn dark-blue-color text-white contact-submit px-5">Submit</button>
           </form>
@@ -288,49 +295,54 @@
   <!-- Contact End -->
 
   <!-- Footer Start -->
-  <footer class="dark-blue-color text-white text-center text-lg-start">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-5 d-flex align-items-center py-4 footer-icon">
-          <img src="img/assets/footer/footer-madana-icon.png" alt="..." class="h-50">
-          <div class="ms-4">
-            <h4 style="margin: 0;" class="text-white">Madana Innotech</h4>
-            <p class="fw-light text-white">Jl. Alamat Gg Gang 123</p>
-            <div>
-              <img src="img/assets/footer/whatsapp-icon.png" alt="...">
-              <img src="img/assets/footer/twt-icon.png" alt="...">
-              <img src="img/assets/footer/linkedin-icon.png" alt="...">
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 py-4">
-          <p class="fs-4 mb-3 text-white">Feature</p>
-          <div id="footer-feature-links">
-          </div>
-        </div>
-        <div class="col-lg-2 py-4">
-          <p class="fs-4 mb-3 text-white">Services</p>
-          <div id="footer-service-links">
-          </div>
-        </div>
-        <div class="col-lg py-4">
-          <p class="fs-4 mb-3 text-white">Our Contacts</p>
+<footer class="dark-blue-color text-white text-center text-lg-start">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 d-flex align-items-center py-4 footer-icon">
+        <img src="" alt="..." class="h-50">
+        <div class="ms-4">
+          <h4 style="margin: 0;" class="text-white">Loading...</h4>
+          <p class="fw-light text-white">Loading...</p>
           <div>
-            <p class="feature-footer mb-3 fw-light text-white">Email: info@madanatech.com</p>
-            <p class="feature-footer fw-light text-white">Phone: +62 8123123123123</p>
+            <a href="#" target="_blank">
+              <img src="img/assets/footer/whatsapp-icon.png" alt="whatsapp">
+            </a>
+            <a href="#" target="_blank">
+              <img src="img/assets/footer/twt-icon.png" alt="twitter">
+            </a>
+            <a href="#" target="_blank">
+              <img src="img/assets/footer/linkedin-icon.png" alt="linkedin">
+            </a>
           </div>
         </div>
       </div>
+      <div class="col-lg-2 py-4">
+        <p class="fs-4 mb-3 text-white">Feature</p>
+        <div id="footer-feature-links"></div>
+      </div>
+      <div class="col-lg-2 py-4">
+        <p class="fs-4 mb-3 text-white">Services</p>
+        <div id="footer-service-links"></div>
+      </div>
+      <div class="col-lg py-4">
+        <p class="fs-4 mb-3 text-white">Our Contacts</p>
+        <div>
+          <p id="footer-email" class="feature-footer mb-3 fw-light text-white">Email: Loading...</p>
+          <p id="footer-phone" class="feature-footer fw-light text-white">Phone: Loading...</p>
+        </div>
+      </div>
     </div>
-    <div class="text-center p-3 dark-blue-color text-white">
-      © Copyright 2023 All Rights Reserved by Madana Innotech
-    </div>
-  </footer>
-  <!-- Footer End -->
+  </div>
+  <div class="text-center p-3 dark-blue-color text-white">
+    © Copyright 2023 All Rights Reserved by Madana Innotech
+  </div>
+</footer>
+<!-- Footer End -->
 </template>
 
 <script>
 import axios from 'axios';
+import L from 'leaflet';
 
 export default {
   data() {
@@ -353,7 +365,19 @@ export default {
         { text: 'FAQs', href: '#faq' },
         { text: 'Contact', href: '#contact' }
       ],
-      categories: []
+      categories: [],
+      konfigurasi: {},
+      maxToolsToShow: 6,
+      maxRolesToShow: 4,
+      maxClientsToShow: 5,
+      maxFaqsToShow: 5,
+      isSmallScreen: window.innerWidth <= 600,
+      contactForm: {
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      }
     };
   },
   created() {
@@ -363,6 +387,7 @@ export default {
     this.fetchClients();
     this.fetchFaqs();
     this.fetchCategories();
+    this.fetchKonfigurasi();
   },
   methods: {
     async fetchProjects() {
@@ -370,6 +395,7 @@ export default {
         const response = await axios.get('/api/public/projects');
         this.projects = response.data.data;
         this.projectChunks = this.chunkArray(this.projects, 3);
+        this.checkScreenSize();
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -378,6 +404,7 @@ export default {
       try {
         const response = await axios.get('/api/public/tools');
         this.tools = response.data.data;
+        this.checkScreenSize();
       } catch (error) {
         console.error('Error fetching tools:', error);
       }
@@ -386,6 +413,7 @@ export default {
       try {
         const response = await axios.get('/api/public/roles');
         this.roles = response.data.data;
+        this.checkScreenSize();
       } catch (error) {
         console.error('Error fetching roles:', error);
       }
@@ -394,6 +422,7 @@ export default {
       try {
         const response = await axios.get('/api/public/clients');
         this.clients = response.data.data;
+        this.checkScreenSize();
       } catch (error) {
         console.error('Error fetching clients:', error);
       }
@@ -403,6 +432,7 @@ export default {
         const response = await axios.get('/api/public/faqs');
         this.faqs = response.data.data;
         this.hasMore = response.data.meta.current_page < response.data.meta.last_page;
+        this.checkScreenSize();
       } catch (error) {
         console.error('Error fetching faqs:', error);
       }
@@ -417,21 +447,26 @@ export default {
         console.error('Error fetching categories:', error);
       }
     },
+    async fetchKonfigurasi() {
+      try {
+        const response = await axios.get('/api/konfigurasi');
+        this.konfigurasi = response.data;
+
+        // Update the footer content after fetching the configuration data
+        this.updateFooterContent();
+
+        // Initialize the map after fetching the configuration data
+        this.initMap();
+      } catch (error) {
+        console.error('Error fetching konfigurasi:', error);
+      }
+    },
     chunkArray(array, chunkSize) {
       const result = [];
       for (let i = 0; i < array.length; i += chunkSize) {
         result.push(array.slice(i, i + chunkSize));
       }
       return result;
-    },
-    async loadMore() {
-      try {
-        const response = await axios.get(`/api/public/faqs?page=${this.faqs.meta.current_page + 1}`);
-        this.faqs = [...this.faqs, ...response.data.data];
-        this.hasMore = response.data.meta.current_page < response.data.meta.last_page;
-      } catch (error) {
-        console.error('Error loading more faqs:', error);
-      }
     },
     downloadFile() {
       var link = document.createElement("a");
@@ -460,48 +495,111 @@ export default {
         navbar.appendChild(li);
       });
 
-      // Add quote-resp button at the end if screen width is below 600px
-      if (window.innerWidth <= 600) {
+      if (this.isSmallScreen) {
         const li = document.createElement('li');
         li.classList.add('nav-item');
         li.innerHTML = `
           <div class="quote-resp">
-            <button type="button" id="downloadButton" class="btn btn-light w-100" style="color: #335C94 !important;">Get Quote</button>
+            <button type="button" id="responsiveDownloadButton" class="btn btn-light w-100" style="color: #335C94 !important;">Get Quote</button>
           </div>
         `;
         navbar.appendChild(li);
+
+        document.getElementById('responsiveDownloadButton').addEventListener('click', this.downloadFile);
       }
 
-      this.navLinks.slice(0, -1).forEach(link => { // skip "Get Quote"
+      this.navLinks.slice(0, -1).forEach(link => {
         const a = document.createElement('a');
         a.href = link.href;
-        a.classList.add('text-decoration-none'); // Optional, to remove underline from links
+        a.classList.add('text-decoration-none');
 
         const p = document.createElement('p');
         p.classList.add('feature-footer', 'mb-3', 'fw-light', 'text-white');
         p.textContent = link.text;
-        
+
         a.appendChild(p);
         footerFeatureLinks.appendChild(a);
       });
     },
     populateFooterServices() {
       const footerServiceLinks = document.getElementById('footer-service-links');
-      footerServiceLinks.innerHTML = ''; // Clear existing links
+      footerServiceLinks.innerHTML = '';
       this.services.forEach(service => {
         const p = document.createElement('p');
         p.classList.add('feature-footer', 'mb-3', 'fw-light', 'text-white');
         p.textContent = service;
         footerServiceLinks.appendChild(p);
       });
+    },
+    toggleShowMore(section) {
+      if (section === 'tools') {
+        this.maxToolsToShow = this.maxToolsToShow === 6 ? this.tools.length : 6;
+      } else if (section === 'roles') {
+        this.maxRolesToShow = this.maxRolesToShow === 4 ? this.roles.length : 4;
+      } else if (section === 'clients') {
+        this.maxClientsToShow = this.maxClientsToShow === 5 ? this.clients.length : 5;
+      } else if (section === 'faqs') {
+        this.maxFaqsToShow = this.maxFaqsToShow === 5 ? this.faqs.length : 5;
+      }
+    },
+    checkScreenSize() {
+      this.isSmallScreen = window.innerWidth <= 600;
+      if (!this.isSmallScreen) {
+        this.maxToolsToShow = this.tools.length;
+        this.maxRolesToShow = this.roles.length;
+        this.maxClientsToShow = this.clients.length;
+        this.maxFaqsToShow = 5;
+      } else {
+        this.maxToolsToShow = 6;
+        this.maxRolesToShow = 4;
+        this.maxClientsToShow = 5;
+        this.maxFaqsToShow = 5;
+      }
+    },
+    initMap() {
+      const googleMapsCoords = this.konfigurasi.google_maps.split(', ');
+      const lat = parseFloat(googleMapsCoords[0]);
+      const lng = parseFloat(googleMapsCoords[1]);
+
+      const map = L.map('map').setView([lat, lng], 18);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 21,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      L.marker([lat, lng]).addTo(map).bindPopup('<b>Madana Technology</b>').openPopup();
+    },
+    updateFooterContent() {
+      document.querySelector('.footer-icon img').src = this.konfigurasi.logo;
+      document.querySelector('.footer-icon h4').textContent = this.konfigurasi.nama;
+      document.querySelector('.footer-icon p').textContent = this.konfigurasi.alamat;
+      
+      const whatsappIcon = document.querySelector('.footer-icon img[alt="whatsapp"]');
+      whatsappIcon.parentElement.href = this.konfigurasi.whatsapp;
+      
+      const twitterIcon = document.querySelector('.footer-icon img[alt="twitter"]');
+      twitterIcon.parentElement.href = this.konfigurasi.twitter;
+      
+      const linkedinIcon = document.querySelector('.footer-icon img[alt="linkedin"]');
+      linkedinIcon.parentElement.href = this.konfigurasi.instagram;
+      
+      document.getElementById('footer-email').textContent = `Email: ${this.konfigurasi.email}`;
+      document.getElementById('footer-phone').textContent = `Phone: ${this.konfigurasi.no_telp}`;
     }
   },
   mounted() {
+    window.addEventListener('resize', this.checkScreenSize);
     document.getElementById("downloadButton").addEventListener("click", this.downloadFile);
     this.populateNavbarAndFooter();
+    this.checkScreenSize();
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize);
+  }
 };
 </script>
+
 
 <route lang="yaml">
     meta:

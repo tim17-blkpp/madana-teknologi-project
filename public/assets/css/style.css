@@ -3,6 +3,11 @@
     color: #000000;
 }
 
+body.modal-open {
+    overflow-y: hidden !important;
+    padding-right: 0 !important;
+}
+
 .light-blue-color {
     background-color: #E7F1FF;
 }
@@ -191,6 +196,9 @@
         margin: 10px 0 20px;
     }
 
+    #about{
+        margin: 6rem 1rem;
+    }
     .get-quote {
         display: none;
     }
@@ -215,6 +223,7 @@
 
     .contact-maps {
         margin-bottom: 20px;
+        aspect-ratio: 1;
     }
 
     .contact-submit {
@@ -277,8 +286,11 @@
     }
 }
 
-@media (min-width: 600px) {
-    .quote-resp {
-        display: none;
+@media (min-width: 600px) {  
+    #about{
+        height: 100vh;
+    }
+    .modal-dialog-centered{
+        max-width: 50%;
     }
 }

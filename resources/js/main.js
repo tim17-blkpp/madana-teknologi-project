@@ -11,6 +11,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import bootstrap from 'bootstrap/dist/js/bootstrap'
+import 'leaflet/dist/leaflet.css';
 
 loadFonts()
 
