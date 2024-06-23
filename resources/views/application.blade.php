@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Materialize - Material Design VueJs Admin template</title>
+    <title>Madana Innotech</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('loader.css') }}" />
     @vite(['resources/js/main.js'])
 </head>
@@ -14,8 +14,9 @@
     <div id="app">
         <div id="loading-bg">
             <div class="loading-logo">
+                <img src="/storage/logo.png" alt="logo" style="max-width: 130px" />
                 <!-- svg logo -->
-                <svg width="86" height="46" viewBox="0 0 268 150" fill="none"
+                {{-- <svg width="86" height="46" viewBox="0 0 268 150" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <rect width="50.289" height="143.953" rx="25.144"
                         transform="matrix(-.8652 .50142 .49859 .86684 195.571 0)" fill="var(--initial-loader-color)" />
@@ -41,7 +42,7 @@
                             <stop offset="1" stop-opacity="0" />
                         </linearGradient>
                     </defs>
-                </svg>
+                </svg> --}}
             </div>
             <div class="loading">
                 <div class="effect-1 effects"></div>

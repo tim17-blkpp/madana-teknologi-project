@@ -27,6 +27,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::post('/login', [LoginController::class, 'login']);
+Route::get('/public/projects', [ProjectController::class, 'publicProjects']);
+Route::get('/public/clients', [ClientController::class, 'publicClients']);
+Route::get('/public/faqs', [FaqController::class, 'publicFaqs']);
+Route::get('/public/tools', [ToolsController::class, 'publicTools']);
+Route::get('/public/roles', [RolesController::class, 'publicRoles']);
+
+// // Routes requiring authentication
+Route::middleware('auth:sanctum')->group(function () {
+});
+
 Route::apiResource('/faqs', FaqController::class);
 Route::apiResource('/projects/categories', CategoryController::class);
 Route::apiResource('/projects/clients', ClientController::class);
@@ -35,30 +47,10 @@ Route::apiResource('/tools', ToolsController::class);
 Route::apiResource('/roles', RolesController::class);
 Route::get('/konfigurasi', [KonfigurasiController::class, 'index']);
 Route::post('/konfigurasi', [KonfigurasiController::class, 'update']);
-Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/public/projects', [ProjectController::class, 'publicProjects']);
-Route::get('/public/clients', [ClientController::class, 'publicClients']);
-Route::get('/public/faqs', [FaqController::class, 'publicFaqs']);
-Route::get('/public/tools', [ToolsController::class, 'publicTools']);
-Route::get('/public/roles', [RolesController::class, 'publicRoles']);
-
-// // Routes requiring authentication
-// // Route::middleware('auth:sanctum')->group(function () {
-// Route::apiResource('/faqs', FaqController::class)->except(['index', 'show']);
-// Route::apiResource('/projects/categories', CategoryController::class)->except(['index', 'show']);
-// Route::apiResource('/projects/clients', ClientController::class)->except(['index', 'show']);
 Route::post('/projects/clients/{id}', [ClientController::class, 'update']);
-
-// Route::apiResource('/projects', ProjectController::class)->except(['index', 'show']);
 Route::post('/projects/{id}', [ProjectController::class, 'update']);
-
-// Route::apiResource('/tools', ToolsController::class)->except(['index', 'show']);
 Route::post('/tools/{id}', [ToolsController::class, 'update']);
-
-// Route::apiResource('/roles', RolesController::class)->except(['index', 'show']);
 Route::post('/roles/{id}', [RolesController::class, 'update']);
-
 Route::post('/konfigurasi', [KonfigurasiController::class, 'update']);
-// });

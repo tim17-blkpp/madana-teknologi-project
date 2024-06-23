@@ -29,14 +29,15 @@ const login = () => {
     email: form.value.email,
     password: form.value.password,
   }).then(response => {
-    localStorage.removeItem('userAbilities')
+    // localStorage.removeItem('userAbilities')
 
     const accessToken = response.data.token
 
     const abilities = response.data.abilities
 
     localStorage.setItem('accessToken', JSON.stringify(accessToken))
-    localStorage.setItem('userAbilities', JSON.stringify(abilities))
+
+    // localStorage.setItem('userAbilities', JSON.stringify(abilities))
     ability.update(abilities)
 
     router.replace(route.query.to ? String(route.query.to) : '/')

@@ -26,12 +26,6 @@ class LoginController extends Controller
                 'message' => 'Login berhasil',
                 'user' => $user,
                 'token' => $token,
-                'abilities' => [
-                    [
-                        'action' => 'manage',
-                        'subject' => 'Auth'
-                    ]
-                ]
             ], 200);
         } else {
             // Log::info('Login gagal');
