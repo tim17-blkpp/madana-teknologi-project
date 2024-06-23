@@ -42,11 +42,14 @@ const router = createRouter({
 })
 
 function isAuthenticated() {
-  const userAbilities = JSON.parse(localStorage.getItem('userAbilities') || '{}')
+  const token = localStorage.getItem('accessToken')
 
-  const userAction = (userAbilities && userAbilities[0]) ? userAbilities[0].action : null
+  // const userAbilities = JSON.parse(localStorage.getItem('userAbilities') || '{}')
 
-  return userAction === 'manage'
+  // const userAction = (userAbilities && userAbilities[0]) ? userAbilities[0].action : null
+
+  // return userAction === 'manage'
+  return token === null ? false : true
 }
 
 
