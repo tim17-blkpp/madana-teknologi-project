@@ -4,6 +4,8 @@ import { useKonfigurasiStore } from './useKonfigurasiStore'
 
 const pageTitle = 'Konfigurasi Halaman Web'
 const konfigurasi = ref([])
+const konfigurasi_logo = ref('')
+const konfigurasi_favicon = ref('')
 
 // alert dialog
 const alertTitle = ref('')
@@ -33,7 +35,22 @@ const formSubmit = async () => {
   const store = useKonfigurasiStore()
 
   try {
-    const response = await store.updateKonfigurasi(konfigurasi.value)
+    const response = await store.updateKonfigurasi(
+      {
+        nama: konfigurasi.value.nama,
+        deskripsi: konfigurasi.value.deskripsi,
+        alamat: konfigurasi.value.alamat,
+        email: konfigurasi.value.email,
+        no_telp: konfigurasi.value.no_telp,
+        whatsapp: konfigurasi.value.whatsapp,
+        google_maps: konfigurasi.value.google_maps,
+        facebook: konfigurasi.value.facebook,
+        instagram: konfigurasi.value.instagram,
+        twitter: konfigurasi.value.twitter,
+        logo: konfigurasi_logo.value,
+        favicon: konfigurasi_favicon.value,
+      },
+    )
 
     console.log(konfigurasi.value)
 
@@ -126,7 +143,7 @@ fetchKonfigurasi()
           
             <VCol cols="12">
               <VFileInput
-                v-model="konfigurasi.logo"
+                v-model="konfigurasi_logo"
                 label="Logo Perusahaan"
                 accept="image/*"
                 placeholder="Pilih file logo perusahaan"
@@ -150,7 +167,7 @@ fetchKonfigurasi()
 
             <VCol cols="12">
               <VFileInput
-                v-model="konfigurasi.favicon"
+                v-model="konfigurasi_favicon"
                 label="Favicon Perusahaan"
                 accept="image/*"
                 placeholder="Pilih file favicon perusahaan"
