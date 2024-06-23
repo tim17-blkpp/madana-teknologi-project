@@ -60,7 +60,7 @@
           <div class="col-sm-6 d-flex align-items-center">
             <div>
               <p class="h2 mb-3">About</p>
-              <p>{{ konfigurasi.deskripsi }}</p>
+              <p class="description-content">{{ konfigurasi.deskripsi }}</p>
             </div>
           </div>
         </div>
@@ -162,10 +162,10 @@
     </div>
     <div class="container">
       <div class="row text-center justify-content-center">
-        <div v-for="(tool, index) in tools.slice(0, maxToolsToShow)" :key="tool.id" class="col-lg-2 col-6 mb-3">
+        <div v-for="(tool, index) in tools.slice(0, maxToolsToShow)" :key="tool.id" class="col-lg-3 col-6 mb-3">
           <div class="d-flex ps-3 align-items-center bg-light rounded-3 shadow-content py-3 mb-3">
             <img :src="tool.icon" alt="..." class="me-3" style="width: 25%; aspect-ratio: 1;">
-            <h6 class="my-auto">{{ tool.name }}</h6>
+            <h5 class="my-auto tool-name">{{ tool.name }}</h5>
           </div>
         </div>
       </div>
@@ -212,9 +212,9 @@
     </div>
     <div class="container">
       <div class="row justify-content-center">
-        <div v-for="(client, index) in clients.slice(0, maxClientsToShow)" :key="client.id" class="col-sm-2 rounded-4">
+        <div v-for="(client, index) in clients.slice(0, maxClientsToShow)" :key="client.id" class="col-sm-3 rounded-4">
           <div class="py-3 shadow-content d-flex justify-content-center mb-4">
-            <img :src="client.logo" alt="..." style="width: 30%; aspect-ratio: 1;">
+            <img :src="client.logo" alt="..." style="width: 25%; aspect-ratio: 1;">
           </div>
         </div>
       </div>
@@ -242,7 +242,7 @@
           </div>
           <div class="col-md py-3">
             <div class="card-body w-100 blue-font">
-              <h5 class="card-title">{{ faq.question }}</h5>
+              <h5 class="card-title ">{{ faq.question }}</h5>
               <p class="card-text">{{ faq.answer }}</p>
             </div>
           </div>
