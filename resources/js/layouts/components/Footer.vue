@@ -4,7 +4,7 @@
     <span class="d-flex align-center">
       &copy;
       {{ new Date().getFullYear() }}
-      <span class="ms-1">Madana Teknologi</span>
+      <strong class="ms-1">Madana Teknologi</strong>
       <!--
         Made With
         <VIcon
