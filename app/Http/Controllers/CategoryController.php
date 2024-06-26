@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -54,6 +55,18 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required',
         ]);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Data gagal ditambahkan',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         try {
             $categoryInput = Category::create(
                 [
@@ -88,8 +101,20 @@ class CategoryController extends Controller
         }
 
         $request->validate([
-            'name' => 'required',
+            'name' => 'sometimes',
         ]);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Data gagal diperbarui',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         try {
             $category = Category::find($id);
             if (!$category) {

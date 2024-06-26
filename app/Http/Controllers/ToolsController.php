@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ToolsController extends Controller
 {
@@ -90,10 +91,19 @@ class ToolsController extends Controller
 
         //
         // Log::info($request->all());
-        $request->validate([
+        // Define validation rules
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'icon_upload' => 'required',
+            'icon_upload' => 'required|file',
         ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Gagal',
+                'errors' => $validator->errors(),
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         if ($request->hasFile('icon_upload')) {
             $icon = $request->file('icon_upload');
@@ -157,11 +167,17 @@ class ToolsController extends Controller
         Log::info($request->all());
 
         $request->validate([
-            'name' => 'required',
+            'name' => 'sometimes',
             'icon_upload' => 'sometimes',
         ]);
 
         $tools = Tools::find($id);
+
+        if (!$tools) {
+            return response()->json([
+                'message' => 'Tool not found'
+            ], JsonResponse::HTTP_NOT_FOUND);
+        }
 
         if ($request->hasFile('icon_upload')) {
             $icon = $request->file('icon_upload');
@@ -174,11 +190,6 @@ class ToolsController extends Controller
             $iconPath = $tools->icon;
         }
 
-        if (!$tools) {
-            return response()->json([
-                'message' => 'Tool not found'
-            ], JsonResponse::HTTP_NOT_FOUND);
-        }
 
         try {
             $tools->update([

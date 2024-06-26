@@ -7,6 +7,7 @@ use App\Models\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
 {
@@ -87,10 +88,19 @@ class RolesController extends Controller
         }
 
         // Log::info($request->all());
-        $request->validate([
+        // Define validation rules
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'icon_upload' => 'required',
+            'icon_upload' => 'required|file',
         ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Gagal',
+                'errors' => $validator->errors(),
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         if ($request->hasFile('icon_upload')) {
             $icon = $request->file('icon_upload');
@@ -146,7 +156,7 @@ class RolesController extends Controller
         }
 
         $request->validate([
-            'name' => 'required',
+            'name' => 'sometimes',
             'icon_upload' => 'sometimes',
         ]);
 
@@ -171,7 +181,7 @@ class RolesController extends Controller
 
         try {
             $role->update([
-                'name' => $request->name,
+                'name' => $request->name ?? $role->name,
                 'icon' => $iconPath ?? null,
                 'show_on_landing_page' => $request->show_on_landing_page ?? $role->show_on_landing_page
             ]);

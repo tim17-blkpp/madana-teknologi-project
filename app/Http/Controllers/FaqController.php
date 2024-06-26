@@ -7,6 +7,7 @@ use App\Models\Faq;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class FaqController extends Controller
 {
@@ -90,6 +91,19 @@ class FaqController extends Controller
             'question' => 'required',
             'answer' => 'required'
         ]);
+
+        $validator = Validator::make($request->all(), [
+            'question' => 'required',
+            'answer' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Gagal menambah data',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         try {
             $faqInput = Faq::create(
                 [
@@ -136,9 +150,22 @@ class FaqController extends Controller
         }
 
         $request->validate([
-            'question' => 'required',
-            'answer' => 'required'
+            'question' => 'sometimes',
+            'answer' => 'sometimes'
         ]);
+
+        $validator = Validator::make($request->all(), [
+            'question' => 'sometimes',
+            'answer' => 'sometimes'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Gagal memperbarui data',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         try {
             $faq = Faq::find($id);
             if (!$faq) {

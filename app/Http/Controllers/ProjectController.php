@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log; // Import the Log facade
+use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
@@ -86,15 +87,25 @@ class ProjectController extends Controller
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-
-        // Log::info($request->all());
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'category_id' => 'required',
             'client_id' => 'required',
-            // 'thumbnail' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'description' => 'sometimes',
+            'url' => 'sometimes',
+            'thumbnail' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'start_date' => 'sometimes',
+            'end_date' => 'sometimes',
+            'status' => 'sometimes',
+            'show_on_landing_page' => 'sometimes',
         ]);
-        // Log::info($request->hasFile('thumbnail'));
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Data gagal ditambahkan',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         if ($request->hasFile('thumbnail')) {
             // Log::info("message: " . "thumbnail exists");
@@ -156,34 +167,31 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Log::info($id);
-        // Log::info(file_get_contents('php://input'));
-        // Log::info($request->headers->all());
-        // Log::info($request->all()); // This should log all request data
-        // Log::info($request->getContent());
-
-        // $data = json_decode($request->getContent());
-        // $data = json_decode($data);
-        // Log::info($data);
         if (!Auth::check()) {
             return response()->json([
                 'message' => 'Unauthorized',
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'sometimes',
             'category_id' => 'sometimes',
             'client_id' => 'sometimes',
             'description' => 'sometimes',
             'url' => 'sometimes',
-            // 'thumbnail' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'thumbnail' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:2048',
             'start_date' => 'sometimes',
             'end_date' => 'sometimes',
             'status' => 'sometimes',
             'show_on_landing_page' => 'sometimes',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Data gagal diperbarui',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $project = Project::find($id);
         // Log::info($project);
@@ -213,15 +221,15 @@ class ProjectController extends Controller
 
         try {
             $project->update([
-                'name' => $request->name,
-                'category_id' => $request->category_id,
-                'client_id' => $request->client_id,
-                'description' => $request->description,
-                'url' => $request->url,
+                'name' => $request->name ?? $project->name,
+                'category_id' => $request->category_id ?? $project->category_id,
+                'client_id' => $request->client_id ?? $project->client_id,
+                'description' => $request->description ?? $project->description,
+                'url' => $request->url ?? $project->url,
                 'thumbnail_path' => $thumbnailPath,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'status' => $request->status,
+                'start_date' => $request->start_date ?? $project->start_date,
+                'end_date' => $request->end_date ?? $project->end_date,
+                'status' => $request->status ?? $project->status,
                 'show_on_landing_page' => $request->show_on_landing_page ? $request->show_on_landing_page : 0,
             ]);
             return response()->json([

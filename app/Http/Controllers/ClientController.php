@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
@@ -89,14 +90,19 @@ class ClientController extends Controller
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        Log::info($request->all());
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            // 'show_on_landing_page' => 'required|boolean'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Data gagal ditambahkan',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
 
         if ($request->hasFile('logo_upload')) {
             $logo = $request->file('logo_upload');
@@ -158,14 +164,19 @@ class ClientController extends Controller
                 'message' => 'Unauthorized',
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
-
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes',
+            'email' => 'sometimes',
+            'phone' => 'sometimes',
+            'address' => 'sometimes',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Data gagal diperbarui',
+                'errors' => $validator->errors()
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
 
         if ($request->hasFile('logo_upload')) {
             $logo = $request->file('logo_upload');
