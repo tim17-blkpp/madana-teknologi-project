@@ -6,6 +6,7 @@ const pageTitle = 'Konfigurasi Halaman Web'
 const konfigurasi = ref([])
 const konfigurasi_logo = ref('')
 const konfigurasi_favicon = ref('')
+const konfigurasi_portfolio = ref('')
 
 // alert dialog
 const alertTitle = ref('')
@@ -47,12 +48,14 @@ const formSubmit = async () => {
         facebook: konfigurasi.value.facebook,
         instagram: konfigurasi.value.instagram,
         twitter: konfigurasi.value.twitter,
+        linkedin: konfigurasi.value.linkedin,
         logo: konfigurasi_logo.value,
         favicon: konfigurasi_favicon.value,
+        portfolio: konfigurasi_portfolio.value,
       },
     )
 
-    console.log(konfigurasi.value)
+    // console.log(konfigurasi.value)
 
     // Check the status of the HTTP response
     if (response.status === 200) {
@@ -82,6 +85,15 @@ const getSubmitMsg = msg => {
   alertMsg.value = msg[1]
 }
 
+const openPortfolio = () => {
+  if (konfigurasi.value.portfolio) {
+    window.open(konfigurasi.value.portfolio, '_blank')
+  } else {
+    console.error('No portfolio URL found')
+  }
+}
+
+
 // Fetch roles function with pagination
 const fetchKonfigurasi = async () => {
   const konfigurasiStore = useKonfigurasiStore()
@@ -95,7 +107,9 @@ const fetchKonfigurasi = async () => {
   }
 }
 
-fetchKonfigurasi()
+onMounted(() => {
+  fetchKonfigurasi()
+})
 </script>
 
 
@@ -144,7 +158,7 @@ fetchKonfigurasi()
             <VCol cols="12">
               <VFileInput
                 v-model="konfigurasi_logo"
-                label="Logo Perusahaan"
+                label="Logo Perusahaan (Format: .png, .jpg, .jpeg)"
                 accept="image/*"
                 placeholder="Pilih file logo perusahaan"
               />
@@ -168,10 +182,46 @@ fetchKonfigurasi()
             <VCol cols="12">
               <VFileInput
                 v-model="konfigurasi_favicon"
-                label="Favicon Perusahaan"
-                accept="image/*"
+                label="Favicon Perusahaan (Format: .ico)"
+                accept="image/x-icon"
                 placeholder="Pilih file favicon perusahaan"
               />
+            </VCol>
+
+            <!-- Preview Favicon -->
+            <VCol
+              v-if="konfigurasi.favicon"
+              cols="12"
+            >
+              <VImg
+                :src="konfigurasi.favicon"
+                alt="Favicon Perusahaan"
+                class="mb-4"
+                style="max-width: 32px;"
+              />
+            </VCol>
+
+            <!-- Upload portfolio file -->
+            <VCol cols="12">
+              <VFileInput
+                v-model="konfigurasi_portfolio"
+                label="Portfolio Perusahaan (Format: .pdf)"
+                accept="application/pdf"
+                placeholder="Pilih file portfolio perusahaan"
+              />
+            </VCol>
+
+            <!-- Preview Portfolio -->
+            <VCol
+              v-if="konfigurasi.portfolio"
+              cols="12"
+            >
+              <VBtn
+                color="primary"
+                @click="openPortfolio"
+              >
+                Lihat Portfolio
+              </VBtn>
             </VCol>
           </VRow>
         </VCardItem>
@@ -212,7 +262,7 @@ fetchKonfigurasi()
               <VTextField
                 v-model="konfigurasi.google_maps"
                 label="Google Maps"
-                placeholder="Isi dengan Google Maps"
+                placeholder="Latitude, Longitude"
               />
             </VCol>
           </VRow>
@@ -225,6 +275,13 @@ fetchKonfigurasi()
             </VCol>
           </VRow>
           <VRow>
+            <VCol cols="12">
+              <VTextField
+                v-model="konfigurasi.linkedin"
+                label="LinkedIn"
+                placeholder="Isi dengan media sosial LinkedIn"
+              />
+            </VCol>
             <VCol cols="12">
               <VTextField
                 v-model="konfigurasi.facebook"

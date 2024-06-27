@@ -64,6 +64,8 @@ class KonfigurasiController extends Controller
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
+        Log::info($request->all());
+
         //
         $request->validate([
             'nama' => 'sometimes',
@@ -75,9 +77,11 @@ class KonfigurasiController extends Controller
             'alamat' => 'sometimes',
             'facebook' => 'sometimes',
             'instagram' => 'sometimes',
+            'linkedin' => 'sometimes',
             'twitter' => 'sometimes',
             'whatsapp' => 'sometimes',
             'google_maps' => 'sometimes',
+            'portfolio' => 'sometimes',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -91,6 +95,28 @@ class KonfigurasiController extends Controller
             $logoPath = $request->logo ?? null;
         }
 
+        if ($request->hasFile('favicon')) {
+            $favicon = $request->file('favicon');
+            if (is_array($favicon)) {
+                $favicon = $favicon[0];
+            }
+            $faviconName = 'favicon.' . $favicon->getClientOriginalExtension() ?? 'ico';
+            $faviconPath = '/storage/' . $favicon->storeAs('', $faviconName, 'public');
+        } else {
+            $faviconPath = $request->favicon ?? null;
+        }
+
+        if ($request->hasFile('portfolio')) {
+            $portfolio = $request->file('portfolio');
+            if (is_array($portfolio)) {
+                $portfolio = $portfolio[0];
+            }
+            $portfolioName = 'portfolio.' . $portfolio->getClientOriginalExtension();
+            $portfolioPath = '/storage/' . $portfolio->storeAs('', $portfolioName, 'public');
+        } else {
+            $portfolioPath = $request->portfolio ?? null;
+        }
+
         $konfigurasi = Konfigurasi::all()->first();
 
         try {
@@ -98,15 +124,17 @@ class KonfigurasiController extends Controller
                 'nama' => $request->nama ?? $konfigurasi->nama,
                 'logo' => $logoPath ?? $konfigurasi->logo,
                 'deskripsi' => $request->deskripsi ?? $konfigurasi->deskripsi,
-                'favicon' => $request->favicon ?? $konfigurasi->favicon,
+                'favicon' => $faviconPath ?? $konfigurasi->favicon,
                 'email' => $request->email ?? $konfigurasi->email,
                 'no_telp' => $request->no_telp ?? $konfigurasi->no_telp,
                 'alamat' => $request->alamat ?? $konfigurasi->alamat,
                 'facebook' => $request->facebook ?? $konfigurasi->facebook,
                 'instagram' => $request->instagram ?? $konfigurasi->instagram,
+                'linkedin' => $request->linkedin ?? $konfigurasi->linkedin,
                 'twitter' => $request->twitter ?? $konfigurasi->twitter,
                 'whatsapp' => $request->whatsapp ?? $konfigurasi->whatsapp,
                 'google_maps' => $request->google_maps ?? $konfigurasi->google_maps,
+                'portfolio' => $portfolioPath ?? $konfigurasi->portfolio,
             ]);
 
             Log::info($request->all());

@@ -10,6 +10,5 @@ class Konfigurasi extends Model
     use HasFactory;
 
     protected $table = 'konfigurasi';
-    protected $fillable = ['nama', 'logo', 'deskripsi', 'favicon', 'email', 'no_telp', 'alamat', 'facebook', 'instagram', 'twitter', 'whatsapp', 'google_maps'];
-
+    protected $fillable = ['nama', 'logo', 'deskripsi', 'favicon', 'email', 'no_telp', 'alamat', 'facebook', 'instagram', 'twitter', 'whatsapp', 'google_maps', 'portfolio', 'linkedin'];
 }

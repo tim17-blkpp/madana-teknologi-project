@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import CategoryAddEditDialog from '../../../../components/dialogs/CategoryAddEditDialog.vue'
 import { useCategoryStore } from './useCategoryStore'
@@ -149,7 +149,9 @@ const fetchCategories = async (query, page = 1, perPage = 10) => {
   }
 }
 
-fetchCategories(searchQuery.value, currentPage.value, perPage.value)
+watchEffect(() => {
+  fetchCategories(searchQuery.value, currentPage.value, perPage.value)
+})
 </script>
 
 
