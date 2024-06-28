@@ -1,29 +1,60 @@
 <template>
   <div>
-    <VCard
-      class="mb-6"
-      title="Statistik Proyek"
-    >
-      <!--
-        <VCardText>All the best for your new project.</VCardText>
-        <VCardText>
-        Please make sure to read our <a
-        href="https://demos.pixinvent.com/materialize-vuejs-admin-template/documentation/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-decoration-none"
-        >
-        Template Documentation
-        </a> to understand where to go from here and how to use our template.
-        </VCardText> 
-      -->
+    <VCard class="mb-6" title="Statistik Proyek">
     </VCard>
-
-    <!--
-      <VCard title="Want to integrate JWT? 🔒">
-      <VCardText>We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.</VCardText>
-      <VCardText>Please read our  JWT Documentation to get more out of JWT authentication.</VCardText>
-      </VCard> 
-    -->
+    <VCard class="mb-6">
+      <div class="row p-5">
+        <div class="col d-flex justify-content-center bg-primary m-3">
+          <div>
+            <p>Project</p>
+            <p>{{ projects.length }}</p>
+          </div>
+        </div>
+        <div class="col d-flex justify-content-center bg-success m-3">
+          <div>
+            <p>Klien</p>
+            <p>{{ clients.length }}</p>
+          </div>
+        </div>
+      </div>
+    </VCard>
   </div>
 </template>
+
+<script>
+import axios from '@axios';
+import { Line } from 'vue-chartjs';
+
+export default {
+  data() {
+    return {
+      projects: [],
+      clients: [],
+    };
+  },
+  created() {
+    this.fetchProjects();
+    this.fetchClients();
+  },
+  methods: {
+    async fetchProjects() {
+      try {
+        const response = await axios.get('/api/projects');
+        this.projects = response.data.data;
+        this.updateChartData(); // Setelah data proyek diterima, perbarui chartData
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    },
+    async fetchClients() {
+      try {
+        const response = await axios.get('/api/projects/clients');
+        this.clients = response.data.data;
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    }
+  }
+};
+</script>
+

@@ -88,17 +88,19 @@
           <li
             class="dropdown-item"
             @click="selectCategory({ name: 'Tampilkan Semua' })"
+            :class="{ active: selectedCategory === category }"
           >
             Tampilkan Semua
           </li>
-          <li
-            v-for="category in categories"
-            :key="category.id"
-            class="dropdown-item"
-            @click="selectCategory(category)"
-          >
-            {{ category.name }} ({{ category.projects_count }})
-          </li>
+            <li
+              v-for="category in categories"
+              :key="category.id"
+              class="dropdown-item"
+              :class="{ active: selectedCategory === category }"
+              @click="selectCategory(category)"
+            >
+              {{ category.name }}
+            </li>
         </ul>
       </div>
       <div
@@ -273,8 +275,8 @@
           <img
             src=""
             alt="..."
-            class="h-50"
-            style="width:100px; height:100px"
+            width="100px"
+            style="filter: invert(1) brightness(10000%);"
           >
           <div class="ms-4">
             <h4
