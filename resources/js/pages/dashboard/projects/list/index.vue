@@ -112,10 +112,10 @@ const onDeleteConfirmation = () => {
         fetchProjects(searchQuery.value, currentPage.value, perPage.value)
       }).catch(error => {
         alertTitle.value = 'Gagal!'
-        alertMsg.value = error
+        alertMsg.value = 'Gagal menghapus Proyek'
       })
     } catch (error) {
-      alertMsg.value = 'Gagal menghapus Klien'
+      alertMsg.value = 'Gagal menghapus Proyek'
       console.log(error)
     } finally {
       showAlertSuccess()

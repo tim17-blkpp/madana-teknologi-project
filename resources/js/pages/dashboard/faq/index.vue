@@ -107,7 +107,7 @@ const onDeleteConfirmation = () => {
         fetchFaqs(searchQuery.value, currentPage.value, perPage.value)
       }).catch(error => {
         alertTitle.value = 'Gagal!'
-        alertMsg.value = error
+        alertMsg.value = 'Gagal menghapus FAQ'
       })
     } catch (error) {
       alertMsg.value = 'Gagal menghapus FAQ'

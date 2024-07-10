@@ -30,6 +30,10 @@ watch(props, () => {
   faqDetails.value = structuredClone(toRaw(props.faqDetails))
 })
 
+const generalRules = msg => [
+  v => !!v || msg,
+]
+
 const formSubmit = async () => {
   const store = useFaqStore()
 
@@ -118,6 +122,7 @@ const formSubmit = async () => {
                 v-model="faqDetails.question"
                 label="Pertanyaan"
                 placeholder="Masukkan pertanyaan"
+                :rules="generalRules('Pertanyaan wajib diisi')"
               />
             </VCol>
 
@@ -127,6 +132,7 @@ const formSubmit = async () => {
                 v-model="faqDetails.answer"
                 label="Jawaban"
                 placeholder="Masukkan jawaban yang dibutuhkan"
+                :rules="generalRules('Jawaban wajib diisi')"
               />
             </VCol>
 

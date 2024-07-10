@@ -25,6 +25,15 @@ const authV2LoginIllustration = useGenerateImageVariant(authV2LoginIllustrationL
 const router = useRouter()
 const route = useRoute()
 
+const emailRules = [
+  v => !!v || 'Email tidak boleh kosong',
+  v => /.+@.+\..+/.test(v) || 'Email tidak valid',
+]
+
+const generalRules = msg => [
+  v => !!v || msg,
+]
+
 const login = () => {
   errors.value = ''
   axios.post('/api/login', {
@@ -121,6 +130,7 @@ const login = () => {
                   label="Email"
                   type="email"
                   placeholder="johndoe@email.com"
+                  :rules="emailRules"
                 />
               </VCol>
 
@@ -133,6 +143,7 @@ const login = () => {
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                  :rules="generalRules('Password tidak boleh kosong')"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 

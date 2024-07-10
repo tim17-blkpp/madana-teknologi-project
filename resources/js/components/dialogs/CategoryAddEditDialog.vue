@@ -25,6 +25,10 @@ const emit = defineEmits([
 
 const categoryDetails = ref(structuredClone(toRaw(props.categoryDetails)))
 
+const nameRules = [
+  v => !!v || 'Nama Kategori harus diisi',
+]
+
 watch(props, () => {
   categoryDetails.value = structuredClone(toRaw(props.categoryDetails))
 })
@@ -118,6 +122,7 @@ const formSubmit = async () => {
                 v-model="categoryDetails.name"
                 label="Nama Kategori"
                 placeholder="Masukkan nama kategori"
+                :rules="nameRules"
               />
             </VCol>
 

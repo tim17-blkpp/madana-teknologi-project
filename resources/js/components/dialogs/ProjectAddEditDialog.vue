@@ -45,10 +45,9 @@ const emit = defineEmits([
 
 const project = ref(structuredClone(toRaw(props.project)))
 
-// const project = reactive({ ...props.project, 
-//   // category_id: props.project.category?.id || null,
-//   // client_id: props.project.client?.id || null 
-// })
+const generalRules = msg => [
+  v => !!v || msg,
+]
 
 const tab = ref('project-info') 
 function deepClone(obj) {
@@ -59,87 +58,17 @@ watch(
   () => props.project,
   newProject => {
     project.value = structuredClone(toRaw(newProject))
-
-    // project.value = deepClone(newProject)
-
-    // Object.assign(project, newProject)
-
-    // project.name = newProject.name
-    // project.category_id = newProject.category?.id || null
-    // project.client_id = newProject.client?.id || null
-    // project.description = newProject.description
-    // project.url = newProject.url
-    // project.thumbnail = newProject.thumbnail
-    // project.start_date = newProject.start_date
-    // project.end_date = newProject.end_date
-    // project.status = newProject.status
   }, { deep: true, immediate: true },
 )
 
-function logFormData(formData) {
-  for (let pair of formData.entries()) {
-    console.log(`${pair[0]}: ${pair[1]}`)
-  }
-}
+// function logFormData(formData) {
+//   for (let pair of formData.entries()) {
+//     console.log(`${pair[0]}: ${pair[1]}`)
+//   }
+// }
 
 
 const formSubmit = async () => {
-  // const store = useProjectStore()
-
-  // if (!project.value.id) {
-  //   // Project baru
-  //   try {
-  //   // Call the createProject action from the store
-  //     project.value.category_id = project.value.category.id
-  //     project.value.client_id = project.value.client.id
-
-  //     const response = await store.createProject(project.value)
-
-  //     // Check the status of the HTTP response
-  //     if (response.status === 201) {
-  //     // Project created successfully
-  //       emit('submit', project.value)
-  //       emit('update:isDialogVisible', false)
-
-  //       // Emit an event to notify the parent component about the successful submission
-  //       emit('formSubmitted', true)
-  //       emit('alertMsg', ['Berhasil!', response.data.message])
-  //     } else {
-  //     // Handle other response statuses
-  //       console.error('Error creating Project. Unexpected status:', response.status)
-  //     }
-  //   } catch (error) {
-  //   // Handle any errors, e.g., display an error message
-  //     console.error('Error creating Project:', error)
-  //   }
-  // }
-  // else {
-  //   // edit Project
-  //   try {
-  //   // Call the updateProject action from the store
-  //     project.value.category_id = project.value.category.id
-  //     project.value.client_id = project.value.client.id
-
-  //     const response = await store.updateProject(project.value.id, project.value)
-
-  //     // Check the status of the HTTP response
-  //     if (response.status === 200) {
-  //     // Project updated successfully
-  //       emit('submit', project.value)
-  //       emit('update:isDialogVisible', false)
-
-  //       // Emit an event to notify the parent component about the successful submission
-  //       emit('formSubmitted', true)
-  //       emit('alertMsg', ['Berhasil!', response.data.message])
-  //     } else {
-  //     // Handle other response statuses
-  //       console.error('Error updating Project. Unexpected status:', response.status)
-  //     }
-  //   } catch (error) {
-  //   // Handle any errors, e.g., display an error message
-  //     console.error('Error Project:', error)
-  //   }
-  // }
   const store = useProjectStore()
 
   // Prepare the project data
@@ -149,17 +78,6 @@ const formSubmit = async () => {
   // Create a FormData object to handle file upload
   const formData = new FormData()
 
-  // Object.keys(project.value).forEach(key => {
-  //   if (project.value[key] !== null) {
-  //     formData.append(key, project.value[key])
-  //   }
-  // })
-  // Object.keys(project.value).forEach(key => {
-  // // Exclude nested category and client objects
-  //   if (key !== 'category' && key !== 'client' && project.value[key] !== null) {
-  //     formData.append(key, project.value[key])
-  //   }
-  // })
   for (const key in project.value) {
     if (key !== 'category' && key !== 'client')
       formData.append(key, project.value[key])
@@ -169,11 +87,7 @@ const formSubmit = async () => {
     formData.append('thumbnail', project.value.thumbnail)
   } 
 
-  // else {
-  //   formData.append('thumbnail', '') // Add empty thumbnail field if not present
-  // }
-
-  logFormData(formData)
+  // logFormData(formData)
 
   try {
     let response
@@ -237,6 +151,7 @@ const formSubmit = async () => {
                 v-model="project.name"
                 label="Nama"
                 placeholder="Masukkan nama proyek"
+                :rules="generalRules('Nama proyek harus diisi')"
               />
             </VCol>
             
@@ -252,6 +167,7 @@ const formSubmit = async () => {
                 item-value="id"
                 label="Kategori"
                 placeholder="Pilih kategori proyek"
+                :rules="generalRules('Kategori proyek harus dipilih')"
               />
             </VCol>
 
@@ -267,6 +183,7 @@ const formSubmit = async () => {
                 item-value="id"
                 label="Klien"
                 placeholder="Pilih klien proyek"
+                :rules="generalRules('Klien proyek harus dipilih')"
               />
             </VCol>
             

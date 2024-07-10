@@ -40,6 +40,15 @@ const phoneRules = [
   v => (v && v.length >= 10 && v.length <= 15) || 'Nomor telepon harus memiliki panjang antara 10 dan 15 karakter',
 ]
 
+const generalRules = msg => [
+  v => !!v || msg,
+]
+
+const emailRules = [
+  v => !!v || 'Email klien wajib diisi',
+  v => /.+@.+\..+/.test(v) || 'Email tidak valid',
+]
+
 const formSubmit = async () => {
   const store = useClientStore()
 
@@ -129,6 +138,7 @@ const formSubmit = async () => {
                 v-model="clientDetails.name"
                 label="Nama Klien"
                 placeholder="Masukkan nama klien"
+                :rules="generalRules('Nama klien wajib diisi')"
               />
             </VCol>
             
@@ -138,6 +148,7 @@ const formSubmit = async () => {
                 v-model="clientDetails.address"
                 label="Alamat"
                 placeholder="Masukkan alamat klien"
+                :rules="generalRules('Alamat klien wajib diisi')"
               />
             </VCol>
             
@@ -150,6 +161,7 @@ const formSubmit = async () => {
                 v-model="clientDetails.email"
                 label="Email Klien"
                 placeholder="Masukkan email klien"
+                :rules="emailRules"
               />
             </VCol>
             

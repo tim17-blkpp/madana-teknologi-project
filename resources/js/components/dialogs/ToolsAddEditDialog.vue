@@ -31,19 +31,22 @@ watch(props, () => {
   toolDetails.value = structuredClone(toRaw(props.toolDetails))
 })
 
+const generalRules = msg => [
+  v => !!v || msg,
+]
+
 const formSubmit = async () => {
   const store = useToolStore()
 
-
   if (!toolDetails.value.id) {
-    // Category baru
+    // Tool baru
     try {
     // Call the createTool action from the store
       const response = await store.createTool(toolDetails.value)
 
       // Check the status of the HTTP response
       if (response.status === 201) {
-      // Category created successfully
+      // Tool created successfully
         emit('submit', toolDetails.value)
         emit('update:isDialogVisible', false)
 
@@ -52,22 +55,22 @@ const formSubmit = async () => {
         emit('alertMsg', ['Berhasil!', response.data.message])
       } else {
       // Handle other response statuses
-        console.error('Error creating Category. Unexpected status:', response.status)
+        console.error('Error creating Tool. Unexpected status:', response.status)
       }
     } catch (error) {
     // Handle any errors, e.g., display an error message
-      console.error('Error creating Category:', error)
+      console.error('Error creating Tool:', error)
     }
   }
   else {
-    // edit Category
+    // edit Tool
     try {
     // Call the updateTool action from the store
       const response = await store.updateTool(toolDetails.value.id, toolDetails.value)
 
       // Check the status of the HTTP response
       if (response.status === 200) {
-      // Category updated successfully
+      // Tool updated successfully
         emit('submit', toolDetails.value)
         emit('update:isDialogVisible', false)
 
@@ -76,11 +79,11 @@ const formSubmit = async () => {
         emit('alertMsg', ['Berhasil!', response.data.message])
       } else {
       // Handle other response statuses
-        console.error('Error updating Category. Unexpected status:', response.status)
+        console.error('Error updating Tool. Unexpected status:', response.status)
       }
     } catch (error) {
     // Handle any errors, e.g., display an error message
-      console.error('Error creating Category:', error)
+      console.error('Error creating Tool:', error)
     }
   }
 
@@ -120,6 +123,7 @@ const formSubmit = async () => {
                 v-model="toolDetails.name"
                 label="Nama"
                 placeholder="Masukkan nama"
+                :rules="generalRules('Nama wajib diisi')"
               />
             </VCol>
             
@@ -159,6 +163,7 @@ const formSubmit = async () => {
                   label="Icon"
                   placeholder="Pilih file"
                   accept="image/*"
+                  :rules="generalRules('Ikon wajib diunggah')"
                 />
               </VCol>
 

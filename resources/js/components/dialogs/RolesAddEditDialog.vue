@@ -31,9 +31,12 @@ watch(props, () => {
   roleDetails.value = structuredClone(toRaw(props.roleDetails))
 })
 
+const generalRules = msg => [
+  v => !!v || msg,
+]
+
 const formSubmit = async () => {
   const store = useRoleStore()
-
 
   if (!roleDetails.value.id) {
     try {
@@ -42,7 +45,7 @@ const formSubmit = async () => {
 
       // Check the status of the HTTP response
       if (response.status === 201) {
-      // Category created successfully
+      // Role created successfully
         emit('submit', roleDetails.value)
         emit('update:isDialogVisible', false)
 
@@ -51,22 +54,22 @@ const formSubmit = async () => {
         emit('alertMsg', ['Berhasil!', response.data.message])
       } else {
       // Handle other response statuses
-        console.error('Error creating Category. Unexpected status:', response.status)
+        console.error('Error creating Role. Unexpected status:', response.status)
       }
     } catch (error) {
     // Handle any errors, e.g., display an error message
-      console.error('Error creating Category:', error)
+      console.error('Error creating Role:', error)
     }
   }
   else {
-    // edit Category
+    // edit Role
     try {
     // Call the updateRole action from the store
       const response = await store.updateRole(roleDetails.value.id, roleDetails.value)
 
       // Check the status of the HTTP response
       if (response.status === 200) {
-      // Category updated successfully
+      // Role updated successfully
         emit('submit', roleDetails.value)
         emit('update:isDialogVisible', false)
 
@@ -75,11 +78,11 @@ const formSubmit = async () => {
         emit('alertMsg', ['Berhasil!', response.data.message])
       } else {
       // Handle other response statuses
-        console.error('Error updating Category. Unexpected status:', response.status)
+        console.error('Error updating Role. Unexpected status:', response.status)
       }
     } catch (error) {
     // Handle any errors, e.g., display an error message
-      console.error('Error creating Category:', error)
+      console.error('Error creating Role:', error)
     }
   }
 
@@ -119,6 +122,7 @@ const formSubmit = async () => {
                 v-model="roleDetails.name"
                 label="Nama"
                 placeholder="Masukkan nama"
+                :rules="generalRules('Nama wajib diisi')"
               />
             </VCol>
             
@@ -158,6 +162,7 @@ const formSubmit = async () => {
                   label="Icon"
                   placeholder="Pilih file"
                   accept="image/*"
+                  :rules="generalRules('Ikon wajib diunggah')"
                 />
               </VCol>
 
