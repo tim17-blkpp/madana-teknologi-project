@@ -94,7 +94,8 @@ class ToolsController extends Controller
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'icon_upload' => 'required|file',
+            'icon_upload' => 'required|array|min:1',
+            'icon_upload.*' => 'image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         // Check if validation fails
@@ -169,6 +170,7 @@ class ToolsController extends Controller
         $request->validate([
             'name' => 'sometimes',
             'icon_upload' => 'sometimes',
+            'icon_upload.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $tools = Tools::find($id);

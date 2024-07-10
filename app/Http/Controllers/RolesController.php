@@ -7,6 +7,7 @@ use App\Models\Roles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
@@ -87,11 +88,12 @@ class RolesController extends Controller
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        // Log::info($request->all());
+        Log::info($request->all());
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'icon_upload' => 'required|file',
+            'icon_upload' => 'required|array|min:1',
+            'icon_upload.*' => 'image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         // Check if validation fails
@@ -158,6 +160,7 @@ class RolesController extends Controller
         $request->validate([
             'name' => 'sometimes',
             'icon_upload' => 'sometimes',
+            'icon_upload.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $role = Roles::find($id);
