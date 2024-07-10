@@ -16,6 +16,7 @@ const form = ref({
   password: '',
 })
 
+const errors = ref('')
 
 const isPasswordVisible = ref(false)
 const authV2LoginMask = useGenerateImageVariant(authV2LoginMaskLight, authV2LoginMaskDark)
@@ -25,6 +26,7 @@ const router = useRouter()
 const route = useRoute()
 
 const login = () => {
+  errors.value = ''
   axios.post('/api/login', {
     email: form.value.email,
     password: form.value.password,
@@ -33,19 +35,20 @@ const login = () => {
 
     const accessToken = response.data.token
 
-    const abilities = response.data.abilities
+    // const abilities = response.data.abilities
 
     localStorage.setItem('accessToken', JSON.stringify(accessToken))
 
     // localStorage.setItem('userAbilities', JSON.stringify(abilities))
-    ability.update(abilities)
+    // ability.update(abilities)
 
     router.replace(route.query.to ? String(route.query.to) : '/')
   }).catch(e => {
-    const { errors: formErrors } = e.response.data
+    // const { errors: formErrors } = e.response.data
 
-    errors.value = formErrors
-    console.error(e.response.data)
+    errors.value = 'Email atau password salah!'
+
+    // console.error(e)
   })
 }
 </script>
@@ -133,11 +136,19 @@ const login = () => {
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 
+                
+                <!-- error message -->
+                <VCol v-if="errors.value != ''">
+                  <span class="text-danger">
+                    {{ errors }}
+                  </span>
+                </VCol>
+
                 <VBtn
                   id="login-btn"
                   block
                   type="submit"
-                  class="mt-4"
+                  class="mt-2"
                 >
                   Login
                 </VBtn>
