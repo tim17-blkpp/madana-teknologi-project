@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ToolsController;
+use App\Http\Controllers\ContactFormController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,3 +55,5 @@ Route::post('/projects/{id}', [ProjectController::class, 'update']);
 Route::post('/tools/{id}', [ToolsController::class, 'update']);
 Route::post('/roles/{id}', [RolesController::class, 'update']);
 Route::post('/konfigurasi', [KonfigurasiController::class, 'update']);
+
+Route::post('/send-contact-form', [ContactFormController::class, 'send']);
